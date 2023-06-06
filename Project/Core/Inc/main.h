@@ -57,6 +57,17 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define KeyBoard_Col1_Pin GPIO_PIN_0
+#define KeyBoard_Col1_GPIO_Port GPIOC
+#define KeyBoard_Col2_Pin GPIO_PIN_1
+#define KeyBoard_Col2_GPIO_Port GPIOC
+#define KeyBoard_Col3_Pin GPIO_PIN_2
+#define KeyBoard_Col3_GPIO_Port GPIOC
+#define KeyBoard_Col4_Pin GPIO_PIN_3
+#define KeyBoard_Col4_GPIO_Port GPIOC
+#define KEY1_Pin GPIO_PIN_0
+#define KEY1_GPIO_Port GPIOA
+#define KEY1_EXTI_IRQn EXTI0_IRQn
 #define LCD_A1_Pin GPIO_PIN_1
 #define LCD_A1_GPIO_Port GPIOA
 #define W25Q_CS_Pin GPIO_PIN_2
@@ -67,20 +78,18 @@ void Error_Handler(void);
 #define LCD_A4_GPIO_Port GPIOA
 #define LCD_C4_Pin GPIO_PIN_4
 #define LCD_C4_GPIO_Port GPIOC
+#define KEY2_Pin GPIO_PIN_5
+#define KEY2_GPIO_Port GPIOC
+#define KEY2_EXTI_IRQn EXTI9_5_IRQn
 #define LCD_B12_Pin GPIO_PIN_12
 #define LCD_B12_GPIO_Port GPIOB
 #define A8_Led_Pin GPIO_PIN_8
 #define A8_Led_GPIO_Port GPIOA
+#define KEY3_Pin GPIO_PIN_15
+#define KEY3_GPIO_Port GPIOA
+#define KEY3_EXTI_IRQn EXTI15_10_IRQn
 #define D2_Led_Pin GPIO_PIN_2
 #define D2_Led_GPIO_Port GPIOD
-#define KeyBoard_Col1_Pin GPIO_PIN_3
-#define KeyBoard_Col1_GPIO_Port GPIOB
-#define KeyBoard_Col2_Pin GPIO_PIN_4
-#define KeyBoard_Col2_GPIO_Port GPIOB
-#define KeyBoard_Col3_Pin GPIO_PIN_5
-#define KeyBoard_Col3_GPIO_Port GPIOB
-#define KeyBoard_Col4_Pin GPIO_PIN_6
-#define KeyBoard_Col4_GPIO_Port GPIOB
 #define KeyBoard_Row1_Pin GPIO_PIN_7
 #define KeyBoard_Row1_GPIO_Port GPIOB
 #define KeyBoard_Row2_Pin GPIO_PIN_8

@@ -20,6 +20,7 @@
 #include "main.h"
 #include "fatfs.h"
 #include "spi.h"
+#include "tim.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -30,7 +31,7 @@
 #include "w25qxx.h"
 #include "spi_sdcard.h"
 #include "display.h"
-
+#include "keyboard.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -100,15 +101,24 @@ int main(void)
   MX_SPI1_Init();
   MX_USART1_UART_Init();
   MX_FATFS_Init();
+  MX_TIM7_Init();
   /* USER CODE BEGIN 2 */
+  
+//  HAL_NVIC_SetPriority(SysTick_IRQn,0,0U);
+//  HAL_NVIC_SetPriority(TIM,1,0U);
+  
 	LCD_CS_DIS;     //尽管从设备基本操作函数中有片选的处理  
   W25QX_NSS_HIGH; //但仍要注意切换同一SPI从设备的片选CS
-	HAL_Delay(1);
   LCD_Init(BLACK);     //LCD驱动ST7735先初始化
-  HAL_Delay(1);
+//  HAL_Delay(1);
 	W25qx_Init();   //W25qx再初始化（内带字库）
+  
+  
+
 	
 	display_string_center("STM32",16,WHITE,BLACK);
+    __HAL_TIM_CLEAR_IT(&htim7,TIM_IT_UPDATE);	
+	HAL_TIM_Base_Start_IT(&htim7);
 	printf("hello");
 	// 初始化TF卡
 	uint8_t res=sd_init();
@@ -126,6 +136,8 @@ int main(void)
 	{
 		printf("%s\n",NameList[i]);
 	}
+
+	
 	
   /* USER CODE END 2 */
 
@@ -186,16 +198,32 @@ int fputc(int ch, FILE *f)
     return ch;
 }
  
-/**
-  * @brief 重定向c库函数getchar,scanf到USARTx
-  * @retval None
-  */
-int fgetc(FILE *f)
+
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-    uint8_t ch = 0;
-    HAL_UART_Receive(&huart1, &ch, 1, 0xffff);
-    return ch;
+	if(htim->Instance==TIM7)
+	{
+//      printf("aaa");
+      HW_KEY_FUNCTION();
+	}
 }
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
+{
+	if(GPIO_Pin==KEY1_Pin)
+	{
+    printf("key1");
+	}
+  else if(GPIO_Pin==KEY2_Pin)
+  {
+    printf("key2");
+  }
+  else if(GPIO_Pin==KEY3_Pin)
+  {
+    printf("key3");
+  }
+}
+
 /* USER CODE END 4 */
 
 /**
