@@ -138,7 +138,7 @@
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2V8M.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -188,7 +188,7 @@
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
-            <useUlib>0</useUlib>
+            <useUlib>1</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <nSecure>0</nSecure>
@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/STM32F1xx_HAL_Driver/Inc;../Middlewares/Third_Party/FatFs/src;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;..\USER\Display;..\USER\Sdcard;..\USER\VS1053;..\USER\W25qxx</IncludePath>
+              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/STM32F1xx_HAL_Driver/Inc;../Middlewares/Third_Party/FatFs/src;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../USER/Display;../USER/Sdcard;../USER/VS1053;../USER/W25qxx</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -621,6 +621,21 @@
               <FileName>w25qxx.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\W25qxx\w25qxx.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Application/User/KeyBoard</GroupName>
+          <Files>
+            <File>
+              <FileName>keyboard.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\KeyBoard\keyboard.c</FilePath>
+            </File>
+            <File>
+              <FileName>keyboard.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\KeyBoard\keyboard.h</FilePath>
             </File>
           </Files>
         </Group>

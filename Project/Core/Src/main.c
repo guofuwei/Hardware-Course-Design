@@ -25,6 +25,11 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <stdio.h>
+#include "lcd_st7735.h"
+#include "w25qxx.h"
+#include "spi_sdcard.h"
+#include "display.h"
 
 /* USER CODE END Includes */
 
@@ -45,6 +50,11 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+char NameList[11][13]={'\0'};//文件列表缓冲区
+
+FATFS Fs;
+FIL File;
+UINT Br,Bw;
 
 /* USER CODE END PV */
 
@@ -91,7 +101,32 @@ int main(void)
   MX_USART1_UART_Init();
   MX_FATFS_Init();
   /* USER CODE BEGIN 2 */
-
+	LCD_CS_DIS;     //尽管从设备基本操作函数中有片选的处理  
+  W25QX_NSS_HIGH; //但仍要注意切换同一SPI从设备的片选CS
+	HAL_Delay(1);
+  LCD_Init(BLACK);     //LCD驱动ST7735先初始化
+  HAL_Delay(1);
+	W25qx_Init();   //W25qx再初始化（内带字库）
+	
+	display_string_center("STM32",16,WHITE,BLACK);
+	printf("hello");
+	// 初始化TF卡
+	uint8_t res=sd_init();
+	sd_init_handle(res);
+	
+	res = f_mount(&Fs,"0",1);
+	f_mount_handle(res);
+	
+	res=f_scandir();
+	f_scandir_handle(res);
+	
+	uint8_t i=0;
+	printf("文件列表如下:\n");
+	for(i=0;i<10;i++)
+	{
+		printf("%s\n",NameList[i]);
+	}
+	
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -145,7 +180,22 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+int fputc(int ch, FILE *f)
+{
+    HAL_UART_Transmit(&huart1, (uint8_t *)&ch, 1, 0xffff);
+    return ch;
+}
+ 
+/**
+  * @brief 重定向c库函数getchar,scanf到USARTx
+  * @retval None
+  */
+int fgetc(FILE *f)
+{
+    uint8_t ch = 0;
+    HAL_UART_Receive(&huart1, &ch, 1, 0xffff);
+    return ch;
+}
 /* USER CODE END 4 */
 
 /**

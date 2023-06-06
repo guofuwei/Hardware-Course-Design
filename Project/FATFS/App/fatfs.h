@@ -28,6 +28,8 @@
 #include "user_diskio.h" /* defines USER_Driver as external */
 
 /* USER CODE BEGIN Includes */
+#include "display.h"
+#include "lcd_st7735.h"
 
 /* USER CODE END Includes */
 
@@ -39,7 +41,10 @@ extern FIL USERFile; /* File object for USER */
 void MX_FATFS_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-
+FRESULT f_scandir(void);
+void sd_init_handle(uint8_t res);
+void f_mount_handle(uint8_t res);
+void f_scandir_handle(uint8_t res);
 /* USER CODE END Prototypes */
 #ifdef __cplusplus
 }

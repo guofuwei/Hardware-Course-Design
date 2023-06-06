@@ -73,8 +73,18 @@ void Error_Handler(void);
 #define A8_Led_GPIO_Port GPIOA
 #define D2_Led_Pin GPIO_PIN_2
 #define D2_Led_GPIO_Port GPIOD
-
-
+#define KeyBoard_Col1_Pin GPIO_PIN_3
+#define KeyBoard_Col1_GPIO_Port GPIOB
+#define KeyBoard_Col2_Pin GPIO_PIN_4
+#define KeyBoard_Col2_GPIO_Port GPIOB
+#define KeyBoard_Col3_Pin GPIO_PIN_5
+#define KeyBoard_Col3_GPIO_Port GPIOB
+#define KeyBoard_Col4_Pin GPIO_PIN_6
+#define KeyBoard_Col4_GPIO_Port GPIOB
+#define KeyBoard_Row1_Pin GPIO_PIN_7
+#define KeyBoard_Row1_GPIO_Port GPIOB
+#define KeyBoard_Row2_Pin GPIO_PIN_8
+#define KeyBoard_Row2_GPIO_Port GPIOB
 /* USER CODE BEGIN Private defines */
 #define huartX            huart1           // 串口操作需要,在LCD对应UART口有变时修改此处即可，比如当前是USART1
 
