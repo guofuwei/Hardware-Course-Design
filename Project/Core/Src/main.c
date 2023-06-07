@@ -66,6 +66,7 @@ MENUINFO MenuInfo=LOADING_MENU; // 当前在哪一个菜单
 KEYSTATUS KeyStatus=KEY_DENY;
 uint8_t SelectIndex=0; // 当前选中的index
 bool SubMenuOk=true;
+uint8_t FileNum=0;
 
 /* USER CODE END PV */
 
@@ -243,7 +244,7 @@ int main(void)
     KeyStatus=KEY_ACCEPT;
   }
 
-	
+	song_play("0:/music/1.mp3");
 	
   /* USER CODE END 2 */
 
@@ -412,7 +413,7 @@ void txt_menu_handle(uint16_t GPIO_Pin)
   {
     clear_select();
     SelectIndex=SelectIndex+1;
-    if(SelectIndex>=4)
+    if(SelectIndex>=FileNum)
     {
        SelectIndex=0;
     }
@@ -440,7 +441,7 @@ void pic_menu_handle(uint16_t GPIO_Pin)
   {
     clear_select();
     SelectIndex=SelectIndex+1;
-    if(SelectIndex>=4)
+    if(SelectIndex>=FileNum)
     {
        SelectIndex=0;
     }
@@ -468,7 +469,7 @@ void music_menu_handle(uint16_t GPIO_Pin)
   {
     clear_select();
     SelectIndex=SelectIndex+1;
-    if(SelectIndex>=4)
+    if(SelectIndex>=FileNum)
     {
        SelectIndex=0;
     }

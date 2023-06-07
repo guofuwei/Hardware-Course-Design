@@ -9,6 +9,7 @@ extern MENUINFO MenuInfo;
 extern uint8_t SelectIndex;
 extern bool SubMenuOk;
 extern char NameList[NAMELIST_NUM][NAMELIST_MAX_LEN];
+extern uint8_t FileNum;
 
 uint8_t private_cursor_check(void)
 {
@@ -129,8 +130,10 @@ void draw_txt_menu(void)
     if(strcmp(NameList[i],"\0")==0)break;
     display_string_custom(NameList[i],MENU_HEIGHT_SIZE,WHITE,BLACK,5,Cursor.y_cur);
   }
+  FileNum=i;
   draw_select();
 }
+
 void draw_pic_menu(void)
 {
   // 菜单复位
@@ -156,10 +159,37 @@ void draw_pic_menu(void)
     if(strcmp(NameList[i],"\0")==0)break;
     display_string_custom(NameList[i],MENU_HEIGHT_SIZE,WHITE,BLACK,5,Cursor.y_cur);
   }
+  FileNum=i;
   draw_select();
 }
+
 void draw_music_menu(void)
 {
+  // 菜单复位
+  MenuInfo=MUSIC_MENU;
+  SelectIndex=0;
+  SubMenuOk=true;
+  set_head_string("音乐文件菜单",WHITE,GOODBLUE);
+  clear_screen_content();
+  
+  
+  FRESULT res=f_scandir(MUSIC_FOLDER);
+  if(res!=FR_OK)
+  {
+    f_scandir_handle(res);
+    display_string("文件扫描失败",MENU_HEIGHT_SIZE,WHITE,BLACK);
+    SubMenuOk=false;
+    return;
+  }
+  display_string("请选择文件:",MENU_HEIGHT_SIZE,WHITE,BLACK);
+  uint8_t i=0;
+  for(i=0;i<NAMELIST_NUM;i++)
+  {
+    if(strcmp(NameList[i],"\0")==0)break;
+    display_string_custom(NameList[i],MENU_HEIGHT_SIZE,WHITE,BLACK,5,Cursor.y_cur);
+  }
+  FileNum=i;
+  draw_select();
 }
 
 void clear_select(void)
