@@ -41,7 +41,14 @@ extern FIL USERFile; /* File object for USER */
 void MX_FATFS_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-FRESULT f_scandir(void);
+typedef enum{
+  ROOT_FOLDER=0,
+  TXT_FOLDER,
+  PIC_FOLDER,
+  MUSIC_FOLDER
+}SCAN_FOLDER;
+
+FRESULT f_scandir(SCAN_FOLDER);
 void sd_init_handle(uint8_t res);
 void f_mount_handle(uint8_t res);
 void f_scandir_handle(uint8_t res);

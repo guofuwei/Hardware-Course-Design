@@ -631,7 +631,7 @@ void drawString(uint16_t x,uint16_t y, char* pFont, uint8_t size,uint16_t fColor
     if(xLCD .InitOK ==0 ) return;
     
     uint16_t xStart = x;
-    if( size!=12 && size!=16 && size!=24 && size!=32 )    size=24;    // 字体大小控制
+    if( size!=12 && size!=16 && size!=24 && size!=32 )    size=16;    // 字体大小控制
     
     while(*pFont != 0)
     {
