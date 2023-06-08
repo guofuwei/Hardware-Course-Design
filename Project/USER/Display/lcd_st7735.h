@@ -90,6 +90,8 @@ void LED_ShowNum(uint8_t x,uint8_t y,uint32_t num,uint8_t len,uint8_t size1,uint
 // 特定汉字32*32字库数据没有放入font.h，故此函数无法使用
 
 
+void drawPoint(uint16_t x, uint16_t y, uint16_t color);
+
 #endif  
  
 
