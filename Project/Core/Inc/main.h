@@ -154,6 +154,10 @@ typedef enum{
   KEY_DENY
 }KEYSTATUS;
 
+typedef enum{
+	VS1053_PLAY,
+	VS1053_STOP
+}VS1053STATUS;
 #define MENU_HEIGHT_SIZE 16
 #define NAMELIST_NUM  10
 #define NAMELIST_MAX_LEN 15

@@ -26,6 +26,9 @@
 #define __VS10XX_H
 
 #include "sys.h"
+//#include "spi_sdcard.c"
+#include "malloc.h"
+#include "fatfs.h"
 
 
 /******************************************************************************************/
@@ -81,6 +84,8 @@ typedef __PACKED_STRUCT
 
 
 extern _vs10xx_obj vsset;   /* VS10XX设置 */
+extern long VS1053_CURRENTPOS;
+extern VS1053STATUS  Vs1053Status;
 
 /* VS10XX 读写命令 */
 #define VS_WRITE_COMMAND    0x02
@@ -163,6 +168,10 @@ uint16_t atk_mo1053_ram_test(void);     /* RAM测试 */
 void atk_mo1053_spi_speed_low(void);    /* SPI低速 */
 void atk_mo1053_spi_speed_high(void);   /* SPI高速 */
 uint8_t atk_mo1053_spi_read_write_byte(uint8_t data);   /* SPI读写一个字节 */
+
+long song_play(char *path,long startpos);
+void addvolume(void);
+void subvolume(void);
 
 
 

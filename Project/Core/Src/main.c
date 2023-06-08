@@ -60,13 +60,19 @@ FATFS Fs;
 FIL File;
 UINT Br,Bw;
 
+
 // 用于按键状态机转移
 SYSINFO SysInfo=SYS_OK;     // 系统状态
 MENUINFO MenuInfo=LOADING_MENU; // 当前在哪一个菜单
 KEYSTATUS KeyStatus=KEY_DENY;
+VS1053STATUS  Vs1053Status=VS1053_PLAY;
 uint8_t SelectIndex=0; // 当前选中的index
 bool SubMenuOk=true;
 uint8_t FileNum=0;
+uint8_t volume=200;
+long VS1053_CURRENTPOS=0;
+extern _vs10xx_obj vsset;
+
 
 /* USER CODE END PV */
 
@@ -78,91 +84,7 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-void song_play(char *path)
-{
-	  FIL *fmp3;
-    uint16_t br;
-    uint8_t res, rval;
-    uint8_t *databuf;
-    uint16_t i = 0;
 
-	
-	   rval = 0;
-		
-    fmp3 = (FIL *)mymalloc(SRAMIN, sizeof(FIL));                        /* 申请内存*/
-    databuf = (uint8_t *)mymalloc(SRAMIN, 4096);                       /* 开辟4096字节的内存区域 */
-
-    atk_mo1053_reset();
-    atk_mo1053_soft_reset();	
-	 //sset.mvol = 200; 
-
-    if (databuf == NULL || fmp3 == NULL)rval = 0XFF ;                   /* 内存申请失败 */
-
-    if (rval == 0)
-    {
-			
-        atk_mo1053_restart_play();      
-		/* 重启播放 */
-        atk_mo1053_set_all(); 
-			/* 设置音量等信息 */
-        atk_mo1053_reset_decode_time();                                 /* 复位解码时间 */
-        //res = exfuns_file_type(pname);       
-	/* 得到文件后缀 */
-                            
-       // if (res == T_FLAC)                                              /* 如果是flac,加载patch */
-      //  {
-       //     atk_mo1053_load_patch((uint16_t *)vs1053b_patch, VS1053B_PATCHLEN);
-      }
-//
-      res = f_open(fmp3,path, FA_READ);              /* 打开文件 */
-			
-			if(res==0)
-			{
-				HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
-			}
-
-        if (res == 0)                                                   /* 打开成功 */
-        {
-					//atk_mo1053_spi_speed_high();
-           // atk_mo1053_spi_speed_high();                                /* 高速 */
-					spi1_set_speed(SPI_SPEED_16);
-
-            while (rval == 0)
-            {
-                res = f_read(fmp3, databuf, 4096, (UINT *)&br);         /* 读出4096个字节 */
-                i = 0;
-
-                do                                                      /* 主播放循环 */
-                {
-                    if (atk_mo1053_send_music_data(databuf + i) == 0)   /* 给VS10XX发送音频数据 */
-                    {
-                        i += 32;
-                    }
-                    else
-                    {
-                       
-                     }
-                       // audio_msg_show(fmp3->obj.objsize);              /* 显示信息 */
-                    
-                } while (i < 4096);                                     /* 循环发送4096个字节 */
-
-                if (br != 4096 || res != 0)
-                {
-                    //rval = KEY0_PRES;
-                    break;                                              /* 读完了 */
-                }
-            }
-
-            f_close(fmp3);
-        }
-        else
-        {
-            rval = 0XFF;                                                /* 出现错误 */
-        }
-    myfree(SRAMIN,databuf);
-    myfree(SRAMIN,fmp3);
-    //return rval;
-}
 /* USER CODE END 0 */
 
 /**
@@ -243,8 +165,8 @@ int main(void)
     display_string_center("按任意键继续",16,GREEN,BLACK);
     KeyStatus=KEY_ACCEPT;
   }
-
-	song_play("0:/music/1.mp3");
+	//atk_mo1053_set_speed(15);
+	song_play("0:/music/1.mp3",0);
 	
   /* USER CODE END 2 */
 
