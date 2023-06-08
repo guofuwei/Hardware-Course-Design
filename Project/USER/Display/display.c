@@ -4,6 +4,7 @@
 #include "main.h"
 #include "fatfs.h"
 #include "VS1053.h"
+#include "piclib.h"
 
 CURSOR Cursor={1,1+SCREEN_HEAD_HEIGHT};
 extern MENUINFO MenuInfo;
@@ -121,9 +122,9 @@ void draw_txt_menu(void)
   set_head_string("文本文件菜单",WHITE,GOODBLUE);
   clear_screen_content();
   
-  printf("aaaa");
+//  printf("aaaa");
   FRESULT res=f_scandir(TXT_FOLDER);
-  printf("bbbbb");
+//  printf("bbbbb");
   if(res!=FR_OK)
   {
     f_scandir_handle(res);
@@ -141,6 +142,7 @@ void draw_txt_menu(void)
   }
   FileNum=i;
   draw_select();
+  SubMenuOk=true;
 }
 
 void draw_pic_menu(void)
@@ -166,10 +168,17 @@ void draw_pic_menu(void)
   for(i=0;i<NAMELIST_NUM;i++)
   {
     if(strcmp(NameList[i],"\0")==0)break;
+    printf("%s\n",NameList[i]);
     display_string_custom(NameList[i],MENU_HEIGHT_SIZE,WHITE,BLACK,5,Cursor.y_cur);
   }
   FileNum=i;
+  
+  
+  printf("draw pic aaaaa\n");
   draw_select();
+  SubMenuOk=true;
+  printf("SubMenu:%d\n",SubMenuOk);
+  printf("draw pic bbbbb\n");
 }
 
 void draw_music_menu(void)
@@ -202,6 +211,26 @@ void draw_music_menu(void)
   draw_select();
 }
 
+
+void draw_readme_menu(void)
+{
+  // 菜单复位
+  MenuInfo=README_MENU;
+  SelectIndex=0;
+  SubMenuOk=true;
+  set_head_string("说明文件菜单",WHITE,GOODBLUE);
+  clear_screen_content();
+  
+  
+  display_string("请选择功能:",MENU_HEIGHT_SIZE,WHITE,BLACK);
+  display_string_custom("查看按键说明",MENU_HEIGHT_SIZE,WHITE,BLACK,5,Cursor.y_cur);
+  display_string_custom("查看SD卡说明",MENU_HEIGHT_SIZE,WHITE,BLACK,5,Cursor.y_cur);
+  display_string_custom("查看音乐播放说明",MENU_HEIGHT_SIZE,WHITE,BLACK,5,Cursor.y_cur);
+  draw_select();
+}
+
+
+
 void show_txt_content(void)
 {
   MenuInfo=TXT_DETAIL_MENU;
@@ -233,6 +262,18 @@ void show_txt_content(void)
 
 void show_pic_content(void)
 {
+  printf("show pic content\n");
+  MenuInfo=PIC_DETAIL_MENU;
+  // 获取文件名
+  char file_name[NAMELIST_MAX_LEN]="\0";
+  strcpy(file_name,NameList[SelectIndex]);
+  char full_name[10+NAMELIST_MAX_LEN]="0:/pic/";
+  strcat(full_name,file_name);
+  
+  set_head_string(file_name, WHITE, GOODBLUE);
+  clear_screen_content();
+  printf("pic 1111\n");
+  ai_load_picfile(full_name,1,SCREEN_HEAD_HEIGHT+1,64,64,1);
 }
 
 void play_song_content(void)
@@ -253,6 +294,34 @@ void play_song_content(void)
   display_string("正在播放音乐",16,WHITE,BLACK);
   
   IsPlay=true;
+}
+
+void show_readme_content(void)
+{
+  MenuInfo=README_DETAIL_MENU;
+  
+  switch(SelectIndex)
+  {
+    case 0:
+      set_head_string("按键说明", WHITE, GOODBLUE);
+      clear_screen_content();
+      display_string("Key1:下一个选项，Key2:确认，Key3:返回或取消",16,WHITE,BLACK);
+      break;
+    case 1:
+      set_head_string("SD卡说明", WHITE, GOODBLUE);
+      clear_screen_content();
+      display_string("txt:文本文件目录，pic:图片文件目录，music:音乐文件目录",16,WHITE,BLACK);
+      break;
+    case 2:
+       set_head_string("音乐播放说明", WHITE, GOODBLUE);
+       clear_screen_content();
+       display_string("【矩阵键盘】1键:暂停/播放，2键:增大音量，3键:减少音量",16,WHITE,BLACK);
+      break;
+    default:
+      set_head_string("非法选项", WHITE, GOODBLUE);
+      clear_screen_content();
+      display_string("无说明",16,WHITE,BLACK);
+  }
 }
 
 // 选择指示

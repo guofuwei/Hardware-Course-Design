@@ -143,9 +143,11 @@ typedef enum{
   TXT_MENU,
   PIC_MENU,
   MUSIC_MENU,
+  README_MENU,
   TXT_DETAIL_MENU,
   PIC_DETAIL_MENU,
-  MUSIC_DETAIL_MENU
+  MUSIC_DETAIL_MENU,
+  README_DETAIL_MENU
 }MENUINFO;  // 总共的菜单
 
 typedef enum{
@@ -157,6 +159,8 @@ typedef enum{
 	VS1053_PLAY,
 	VS1053_STOP
 }VS1053STATUS;
+
+
 #define MENU_HEIGHT_SIZE 16
 #define NAMELIST_NUM  10
 #define NAMELIST_MAX_LEN 15
@@ -167,10 +171,12 @@ void main_menu_handle(uint16_t GPIO_Pin);
 void txt_menu_handle(uint16_t GPIO_Pin);
 void pic_menu_handle(uint16_t GPIO_Pin);
 void music_menu_handle(uint16_t GPIO_Pin);
+void readme_menu_handle(uint16_t GPIO_Pin);
 
 void txt_detail_handle(uint16_t GPIO_Pin);
 void pic_detail_handle(uint16_t GPIO_Pin);
 void music_detail_handle(uint16_t GPIO_Pin);
+void readme_detail_handle(uint16_t GPIO_Pin);
 
 void music_run_stop(void);
 
