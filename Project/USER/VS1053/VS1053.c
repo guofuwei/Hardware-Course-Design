@@ -90,7 +90,7 @@ uint8_t atk_mo1053_init(void)
     GPIO_Initure.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_Initure.Pull = GPIO_PULLUP;
     GPIO_Initure.Speed = GPIO_SPEED_FREQ_HIGH;
-    HAL_GPIO_Init(VS10XX_RST_GPIO_PORT, &GPIO_Initure);
+    //HAL_GPIO_Init(VS10XX_RST_GPIO_PORT, &GPIO_Initure);
     /* XCS  引脚模式设置,输出 */
     GPIO_Initure.Pin = VS10XX_XCS_GPIO_PIN;
     HAL_GPIO_Init(VS10XX_XCS_GPIO_PORT, &GPIO_Initure);
@@ -784,8 +784,12 @@ long song_play(char *path,long startpos)
         switch(Vs1053Status)
         {
           case VS1053_STOP:
-            Vs1053Status=VS1053_PLAY;
+            
             VS1053_CURRENTPOS=length;
+					  f_close(fmp3);
+					  myfree(SRAMIN,databuf);
+            myfree(SRAMIN,fmp3);
+					
             return 0;
           default: break;
         }     

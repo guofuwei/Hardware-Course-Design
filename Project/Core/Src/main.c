@@ -127,11 +127,13 @@ int main(void)
   //  HAL_NVIC_SetPriority(SysTick_IRQn,0,0U);
   //  HAL_NVIC_SetPriority(TIM,1,0U);
 
+  
   LCD_CS_DIS;      // 尽管从设备基本操作函数中有片选的处理
   W25QX_NSS_HIGH;  // 但仍要注意切换同一SPI从设备的片选CS
   LCD_Init(BLACK); // LCD驱动ST7735先初始化
   W25qx_Init();    // W25qx再初始化（内带字库）
-  // atk_mo1053_init();// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//atk_mo1053_init();
+   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   // 初始化屏幕标题
   set_head_string("系统初始化中", WHITE, GOODBLUE);
@@ -170,7 +172,7 @@ int main(void)
     KeyStatus = KEY_ACCEPT;
   }
 
-  song_play("0:/music/1.mp3",0);
+  //song_play("0:/music/3.mp3",0);
 
   /* USER CODE END 2 */
 
@@ -179,11 +181,12 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-//    if(IsPlay==true)
-//    {
-//      song_play(SongFullName,0);
-//      IsPlay=false;
-//    }
+    if(IsPlay==true)
+    {
+      song_play(SongFullName,0);
+			Vs1053Status=VS1053_PLAY;
+      IsPlay=false;
+   }
 //    HAL_Delay(100);
     /* USER CODE BEGIN 3 */
   }
@@ -477,12 +480,15 @@ void music_detail_handle(uint16_t GPIO_Pin)
   }
   else if (GPIO_Pin == KEY3_Pin)
   {
-    Vs1053Status=VS1053_STOP;
-    IsPlay=false;
+    
+    
 //    VS10XX_XCS(1);
 //    VS10XX_XDCS(1);
-    HAL_Delay(500);
+    
     draw_music_menu();
+		HAL_Delay(100);
+		Vs1053Status=VS1053_STOP;
+		IsPlay=false;
   }
   else
   {

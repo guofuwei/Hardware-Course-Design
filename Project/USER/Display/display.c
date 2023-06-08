@@ -183,7 +183,7 @@ void draw_music_menu(void)
   
   printf("1111");
   FRESULT res=f_scandir(MUSIC_FOLDER);
-   printf("2222");
+  printf("2222");
   if(res!=FR_OK)
   {
     f_scandir_handle(res);
