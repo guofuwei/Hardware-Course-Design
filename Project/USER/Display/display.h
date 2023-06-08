@@ -41,6 +41,7 @@ void draw_select(void);
 // 具体的内容显示
 void show_txt_content(void);
 void show_pic_content(void);
+void play_song_content(void);
 
 #ifdef __cplusplus
 }

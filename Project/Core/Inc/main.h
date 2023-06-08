@@ -98,7 +98,7 @@ void Error_Handler(void);
 #define huartX            huart1           // 串口操作需要,在LCD对应UART口有变时修改此处即可，比如当前是USART1
 
 #define hspiX             hspi1             // LCD_SPI操作需要,在LCD对应SPI口有变时修改此处即可，比如当前是SPI1
-#define LCD_SPI_Init      //MX_SPI1_Init()  // LCD_SPI操作需要,在LCD对应SPI口有变时修改此处即可，比如当前是SPI1
+#define LCD_SPI_Init      MX_SPI1_Init()  // LCD_SPI操作需要,在LCD对应SPI口有变时修改此处即可，比如当前是SPI1               !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                                             // 若是软仿SPI，可以定义为空操作，避免改lcd.c
 //当多个从SPI设备用同种SPI方式，不必每个设备切换时都重新设置SPI_Init，只要切换NSS，
 //让当前设备NSS为低即可，故也定义空SPIInit()，这样可不必修改后面代码。
@@ -145,7 +145,8 @@ typedef enum{
   TXT_MENU,
   PIC_MENU,
   MUSIC_MENU,
-  TXT_PIC_DETAIL_MENU,
+  TXT_DETAIL_MENU,
+  PIC_DETAIL_MENU,
   MUSIC_DETAIL_MENU
 }MENUINFO;  // 总共的菜单
 
@@ -168,6 +169,11 @@ void main_menu_handle(uint16_t GPIO_Pin);
 void txt_menu_handle(uint16_t GPIO_Pin);
 void pic_menu_handle(uint16_t GPIO_Pin);
 void music_menu_handle(uint16_t GPIO_Pin);
+
+void txt_detail_handle(uint16_t GPIO_Pin);
+void pic_detail_handle(uint16_t GPIO_Pin);
+void music_detail_handle(uint16_t GPIO_Pin);
+
 
 
 // 下面的SCK, MOSI 控制宏定义在软仿SPI方式才用

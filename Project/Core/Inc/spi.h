@@ -36,30 +36,30 @@ extern SPI_HandleTypeDef hspi1;
 
 /* USER CODE BEGIN Private defines */
 /******************************************************************************************/
-/* SPI1 寮曡剼 瀹氫箟 */
+/* SPI1 引脚 定义 */
 
 #define SPI1_SCK_GPIO_PORT              GPIOA
 #define SPI1_SCK_GPIO_PIN               GPIO_PIN_5
-#define SPI1_SCK_GPIO_CLK_ENABLE()      do{ __HAL_RCC_GPIOA_CLK_ENABLE(); }while(0)   /* PA鍙ｆ椂閽熶娇鑳? */
+#define SPI1_SCK_GPIO_CLK_ENABLE()      do{ __HAL_RCC_GPIOA_CLK_ENABLE(); }while(0)   /* PA口时钟使能 */
 
 #define SPI1_MISO_GPIO_PORT             GPIOA
 #define SPI1_MISO_GPIO_PIN              GPIO_PIN_6
-#define SPI1_MISO_GPIO_CLK_ENABLE()     do{ __HAL_RCC_GPIOA_CLK_ENABLE(); }while(0)   /* PA鍙ｆ椂閽熶娇鑳? */
+#define SPI1_MISO_GPIO_CLK_ENABLE()     do{ __HAL_RCC_GPIOA_CLK_ENABLE(); }while(0)   /* PA口时钟使能 */
 
 #define SPI1_MOSI_GPIO_PORT             GPIOA
 #define SPI1_MOSI_GPIO_PIN              GPIO_PIN_7
-#define SPI1_MOSI_GPIO_CLK_ENABLE()     do{ __HAL_RCC_GPIOA_CLK_ENABLE(); }while(0)   /* PA鍙ｆ椂閽熶娇鑳? */
+#define SPI1_MOSI_GPIO_CLK_ENABLE()     do{ __HAL_RCC_GPIOA_CLK_ENABLE(); }while(0)   /* PA口时钟使能 */
 
-/* SPI2鐩稿叧瀹氫箟 */
+/* SPI2相关定义 */
 #define SPI1_SPI                        SPI1
-#define SPI1_SPI_CLK_ENABLE()           do{ __HAL_RCC_SPI1_CLK_ENABLE(); }while(0)  /* SPI1鏃堕挓浣胯兘 */
+#define SPI1_SPI_CLK_ENABLE()           do{ __HAL_RCC_SPI1_CLK_ENABLE(); }while(0)  /* SPI1时钟使能 */
 
 
 
 /******************************************************************************************/
 
 
-/* SPI鎬荤嚎閫熷害璁剧疆 */
+/* SPI总线速度设置 */
 #define SPI_SPEED_2         0
 #define SPI_SPEED_4         1
 #define SPI_SPEED_8         2

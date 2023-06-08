@@ -71,19 +71,19 @@ FRESULT f_scandir(SCAN_FOLDER scan_folder)
   switch(scan_folder)
   {
     case ROOT_FOLDER:
-//      printf("f_scanf:0:/");
+      printf("f_scanf:0:/");
       res = f_opendir(&dir, "0:/");
       break;
     case TXT_FOLDER:
-//       printf("f_scanf:0:/txt");
+       printf("f_scanf:0:/txt");
       res = f_opendir(&dir, "0:/txt");
       break;
     case PIC_FOLDER:
-//       printf("f_scanf:0:/pic");
+       printf("f_scanf:0:/pic");
       res = f_opendir(&dir, "0:/pic");
       break;
     case MUSIC_FOLDER:
-//      printf("f_scanf:0:/music");
+      printf("f_scanf:0:/music");
       res = f_opendir(&dir, "0:/music");
       break;
     default:
@@ -92,6 +92,7 @@ FRESULT f_scandir(SCAN_FOLDER scan_folder)
       LED_RED_OFF;
       return FR_INVALID_PARAMETER;
   }
+  printf("%d",res);
 	if (res == FR_OK) 
   {
     for (;;) {
