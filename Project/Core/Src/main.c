@@ -179,7 +179,7 @@ int main(void)
 
   
 //  clear_screen_all();
-//  ai_load_picfile("0:/pic/avatar.bmp\0",1,1,64,64,1);
+//  ai_load_picfile("0:/pic/Í·Ïñ.jpg\0",1,1,64,64,0);
   //song_play("0:/music/3.mp3",0);
   
 

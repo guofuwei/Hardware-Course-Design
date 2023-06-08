@@ -714,11 +714,6 @@
               <FilePath>..\USER\Picture\bmp.h</FilePath>
             </File>
             <File>
-              <FileName>gif.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\Picture\gif.h</FilePath>
-            </File>
-            <File>
               <FileName>piclib.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\USER\Picture\piclib.h</FilePath>
@@ -727,6 +722,16 @@
               <FileName>tjpgd.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\USER\Picture\tjpgd.h</FilePath>
+            </File>
+            <File>
+              <FileName>integer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\Picture\integer.h</FilePath>
+            </File>
+            <File>
+              <FileName>tjpgd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Picture\tjpgd.c</FilePath>
             </File>
           </Files>
         </Group>

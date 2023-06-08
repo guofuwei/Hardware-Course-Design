@@ -39,9 +39,10 @@ void piclib_draw_hline(uint16_t x0,uint16_t y0,uint16_t len,uint16_t color)
 //x,y:起始坐标
 //width，height：宽度和高度。
 //*color：颜色数组
-void piclib_fill_color(uint16_t x,uint16_t y,uint16_t width,uint16_t height,uint16_t color)
+void piclib_fill_color(uint16_t x,uint16_t y,uint16_t width,uint16_t height,uint16_t* color)
 {  
-	LCD_Fill(x,y,x+width-1,y+height-1,color);	
+//	LCD_Fill(x,y,x+width-1,y+height-1,color);	
+  // TO DO!!!!!!!!!!!!!!!!!!!!!!!!!!!
 }
 //////////////////////////////////////////////////////////////////////////
 //画图初始化,在画图之前,必须先调用此函数
@@ -126,7 +127,7 @@ uint8_t is_element_ok(uint16_t x,uint16_t y,uint8_t chg)
 //图片在开始和结束的坐标点范围内显示
 uint8_t ai_load_picfile(char *filename,uint16_t x,uint16_t y,uint16_t width,uint16_t height,uint8_t fast)
 {	
-  printf("1111");
+//  printf("1111");
 	uint8_t	res;//返回值
 	uint8_t temp;	
 	if((x+width)>picinfo.lcdwidth)return PIC_WINDOW_ERR;		//x坐标超范围了.
@@ -137,7 +138,7 @@ uint8_t ai_load_picfile(char *filename,uint16_t x,uint16_t y,uint16_t width,uint
 	picinfo.S_Width=width;
   
   
-  printf("2222");
+//  printf("2222");
 	//显示区域无效
 	if(picinfo.S_Height==0||picinfo.S_Width==0)
 	{
@@ -146,7 +147,7 @@ uint8_t ai_load_picfile(char *filename,uint16_t x,uint16_t y,uint16_t width,uint
 		return FALSE;   
 	}
   
-  printf("3333");
+//  printf("3333");
 	if(pic_phy.fillcolor==NULL)fast=0;//颜色填充函数未实现,不能快速显示
 	//显示的开始坐标点
 	picinfo.S_YOFF=y;
@@ -159,7 +160,7 @@ uint8_t ai_load_picfile(char *filename,uint16_t x,uint16_t y,uint16_t width,uint
 
 	temp=f_typetell(filename);	//得到文件的类型
   
-  printf("5555");
+//  printf("5555");
 	switch(temp)
 	{											  
 		case T_BMP:
@@ -169,12 +170,12 @@ uint8_t ai_load_picfile(char *filename,uint16_t x,uint16_t y,uint16_t width,uint
 		case T_JPG:
 		case T_JPEG:
       printf("jpg图片\n");
-//			res=jpg_decode(filename,fast);				//解码JPG/JPEG	  	  
+			res=jpg_decode((const uint8_t*)filename,fast);				//解码JPG/JPEG	  	  
 			break;
-		case T_GIF:
-      printf("gif图片\n");
-//			res=gif_decode(filename,x,y,width,height);	//解码gif  	  
-			break;
+//		case T_GIF:
+//      printf("gif图片\n");
+////		res=gif_decode(filename,x,y,width,height);	//解码gif  	  
+//			break;
 		default:
       printf("error 图片\n");
 	 		res=PIC_FORMAT_ERR;  						//非图片格式!!!  
