@@ -52,6 +52,26 @@ FRESULT f_scandir(SCAN_FOLDER);
 void sd_init_handle(uint8_t res);
 void f_mount_handle(uint8_t res);
 void f_scandir_handle(uint8_t res);
+
+
+uint8_t char_upper(uint8_t c);
+
+
+//f_typetell返回的类型定义
+//根据表FILE_TYPE_TBL获得.在exfuns.c里面定义
+#define T_BIN		0X00	//bin文件
+#define T_LRC		0X10	//lrc文件
+#define T_NES		0X20	//nes文件
+#define T_TEXT		0X30	//.txt文件
+#define T_C			0X31	//.c文件
+#define T_H			0X32    //.h文件
+#define T_FLAC		0X4C	//flac文件
+#define T_BMP		0X50	//bmp文件
+#define T_JPG		0X51	//jpg文件
+#define T_JPEG		0X52	//jpeg文件		 
+#define T_GIF		0X53	//gif文件  
+
+uint8_t f_typetell(char *fname);
 /* USER CODE END Prototypes */
 #ifdef __cplusplus
 }
