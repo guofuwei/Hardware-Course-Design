@@ -292,29 +292,53 @@ const char* FILE_TYPE_TBL[6][13]=
 {"MP1","MP2","MP3","MP4","M4A","3GP","3G2","OGG","ACC","WMA","WAV","MID","FLAC"},//音乐文件
 {"BMP","JPG","JPEG","GIF"},//图片文件
 };
+
+
 uint8_t f_typetell(char *fname)
 {
-	uint8_t tbuf[5];
-	char *attr="\0";//后缀名
+	char tbuf[5]="\0";
+	char attr[20]="\0";
 	uint8_t i=0,j;
-	while(i<250)
+  
+  uint8_t len=strlen(fname);
+	while(i<len)
 	{
 		i++;
-		if(*fname=='\0')break;//偏移到了最后了.
+    printf("i:%d\n",i);
+    printf("fname:%s\n",fname);
+		if(*fname=='.') break;//偏移到了最后了.
 		fname++;
+    //if(fname[i]=='.') break;//偏移到了最后了.
 	}
-	if(i==250)return 0XFF;//错误的字符串.
- 	for(i=0;i<5;i++)//得到后缀名
+	if(i==len)return 0XFF;//错误的字符串.
+	if(*fname=='.')
 	{
-		fname--;
-		if(*fname=='.')
-		{
-			fname++;
+                                                                                                                                                                                                                                         			fname++;
 			strcpy(attr,fname);
-			break;
-		}
-  	}
-	strcpy((char *)tbuf,(const char*)attr);//copy
+    //i++;
+			//strncpy(attr,fname+i,len-i-1);
+	}
+  
+//  	while(i<250)
+//	{
+//		i++;
+//    printf("i:%d\n",i);
+//    printf("fname:%s\n",fname);
+//		if(*fname=='\0')break;//偏移到了最后了.
+//		fname++;
+//	}
+//  	if(i==250)return 0XFF;//错误的字符串.
+// 	for(i=0;i<5;i++)//得到后缀名
+//	{
+//		fname--;
+//		if(*fname=='.')
+//		{
+//			fname++;
+//			strcpy(attr,fname);
+//			break;
+//		}
+//  }
+	strcpy(tbuf,(const char*)attr);//copy
  	for(i=0;i<4;i++)tbuf[i]=char_upper(tbuf[i]);//全部变为大写 
 	for(i=0;i<6;i++)
 	{

@@ -34,6 +34,7 @@
 #include "keyboard.h"
 #include "malloc.h"
 #include "VS1053.h"
+#include "piclib.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -69,13 +70,14 @@ uint8_t SelectIndex = 0; // 当前选中的index
 bool SubMenuOk = true;   // 子菜单是否ok
 uint8_t FileNum = 0;     // 扫描出来的文件个数，防止select指示过度
 char Buffer[BUFFER_SIZE] = "0";
-uint8_t volume = 200;
+
 long VS1053_CURRENTPOS = 0;
 extern _vs10xx_obj vsset;
 
 // 用于在主函数中播放
 char SongFullName[10+NAMELIST_MAX_LEN]="\0";
 bool IsPlay=false;
+bool IsStop=false;
 
 /* USER CODE END PV */
 
@@ -91,9 +93,9 @@ void SystemClock_Config(void);
 /* USER CODE END 0 */
 
 /**
- * @brief  The application entry point.
- * @retval int
- */
+  * @brief  The application entry point.
+  * @retval int
+  */
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -135,6 +137,7 @@ int main(void)
 	//atk_mo1053_init();
    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+  	
   // 初始化屏幕标题
   set_head_string("系统初始化中", WHITE, GOODBLUE);
   // 启动定时器
@@ -150,6 +153,8 @@ int main(void)
   res = f_scandir(ROOT_FOLDER);
   f_scandir_handle(res);
 
+  // 初始化画图
+  piclib_init();	
 //  uint8_t i = 0;
 //  for (i = 0; i < NAMELIST_NUM; i++)
 //  {
@@ -172,7 +177,11 @@ int main(void)
     KeyStatus = KEY_ACCEPT;
   }
 
+  
+  clear_screen_all();
+  ai_load_picfile("0:/pic/avatar.bmp\0",1,1,64,64,1);
   //song_play("0:/music/3.mp3",0);
+  
 
   /* USER CODE END 2 */
 
@@ -181,30 +190,38 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    if(IsPlay==true)
+    
+
+    /* USER CODE BEGIN 3 */
+    if(IsPlay&&!IsStop)
     {
       song_play(SongFullName,0);
-			Vs1053Status=VS1053_PLAY;
+      Vs1053Status=VS1053_PLAY;
       IsPlay=false;
-   }
-//    HAL_Delay(100);
-    /* USER CODE BEGIN 3 */
+    }
+    if(IsPlay&&IsStop)
+    {
+      song_play(SongFullName,VS1053_CURRENTPOS);
+      Vs1053Status=VS1053_PLAY;
+      IsPlay=false;
+    }
+    
   }
   /* USER CODE END 3 */
 }
 
 /**
- * @brief System Clock Configuration
- * @retval None
- */
+  * @brief System Clock Configuration
+  * @retval None
+  */
 void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
   /** Initializes the RCC Oscillators according to the specified parameters
-   * in the RCC_OscInitTypeDef structure.
-   */
+  * in the RCC_OscInitTypeDef structure.
+  */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
@@ -218,8 +235,9 @@ void SystemClock_Config(void)
   }
 
   /** Initializes the CPU, AHB and APB buses clocks
-   */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
+  */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
+                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
@@ -242,7 +260,26 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   if (htim->Instance == TIM7)
   {
-    HW_KEY_FUNCTION();
+//    HAL_Delay(10);
+//    printf("tim7\n");
+    uint8_t res=KEY_SCAN();
+    if(res!=0 && MenuInfo==MUSIC_DETAIL_MENU)
+    {
+      if(res==1)
+      {
+        music_run_stop();
+      }
+      if(res==2)
+      {
+        addvolume();
+      
+      }
+      if(res==3)
+      {
+        subvolume();
+      }
+      printf("res:%d",res);
+    }
   }
 }
 
@@ -476,12 +513,10 @@ void music_detail_handle(uint16_t GPIO_Pin)
   {
   }
   else if (GPIO_Pin == KEY2_Pin && SubMenuOk == true)
-  {
+                                                                {
   }
   else if (GPIO_Pin == KEY3_Pin)
   {
-    
-    
 //    VS10XX_XCS(1);
 //    VS10XX_XDCS(1);
     
@@ -489,6 +524,7 @@ void music_detail_handle(uint16_t GPIO_Pin)
 		HAL_Delay(100);
 		Vs1053Status=VS1053_STOP;
 		IsPlay=false;
+    IsStop=false;
   }
   else
   {
@@ -498,12 +534,37 @@ void music_detail_handle(uint16_t GPIO_Pin)
   }
 }
 
+void music_run_stop()
+{
+      if(!IsStop)
+    {
+      IsStop=1;
+    Vs1053Status = VS1053_STOP;
+    IsPlay=false;
+    
+    }
+    else
+    {
+      if(IsPlay)
+      {      
+        IsPlay=false;
+        Vs1053Status=VS1053_STOP;        
+      }
+      else
+      {
+        IsPlay=true;
+      }
+    }
+  
+
+}
+
 /* USER CODE END 4 */
 
 /**
- * @brief  This function is executed in case of error occurrence.
- * @retval None
- */
+  * @brief  This function is executed in case of error occurrence.
+  * @retval None
+  */
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
@@ -515,14 +576,14 @@ void Error_Handler(void)
   /* USER CODE END Error_Handler_Debug */
 }
 
-#ifdef USE_FULL_ASSERT
+#ifdef  USE_FULL_ASSERT
 /**
- * @brief  Reports the name of the source file and the source line number
- *         where the assert_param error has occurred.
- * @param  file: pointer to the source file name
- * @param  line: assert_param error line source number
- * @retval None
- */
+  * @brief  Reports the name of the source file and the source line number
+  *         where the assert_param error has occurred.
+  * @param  file: pointer to the source file name
+  * @param  line: assert_param error line source number
+  * @retval None
+  */
 void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */

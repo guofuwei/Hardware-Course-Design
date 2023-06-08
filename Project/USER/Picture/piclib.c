@@ -124,16 +124,20 @@ uint8_t is_element_ok(uint16_t x,uint16_t y,uint8_t chg)
 //x,y,width,height:坐标及显示区域尺寸
 //fast:使能jpeg/jpg小图片(图片尺寸小于等于液晶分辨率)快速解码,0,不使能;1,使能.
 //图片在开始和结束的坐标点范围内显示
-uint8_t ai_load_picfile(const uint8_t *filename,uint16_t x,uint16_t y,uint16_t width,uint16_t height,uint8_t fast)
+uint8_t ai_load_picfile(char *filename,uint16_t x,uint16_t y,uint16_t width,uint16_t height,uint8_t fast)
 {	
+  printf("1111");
 	uint8_t	res;//返回值
 	uint8_t temp;	
 	if((x+width)>picinfo.lcdwidth)return PIC_WINDOW_ERR;		//x坐标超范围了.
 	if((y+height)>picinfo.lcdheight)return PIC_WINDOW_ERR;		//y坐标超范围了.  
 	//得到显示方框大小	  	 
-	if(width==0||height==0)return PIC_WINDOW_ERR;	//窗口设定错误
+//	if(width==0||height==0)return PIC_WINDOW_ERR;	//窗口设定错误
 	picinfo.S_Height=height;
 	picinfo.S_Width=width;
+  
+  
+  printf("2222");
 	//显示区域无效
 	if(picinfo.S_Height==0||picinfo.S_Width==0)
 	{
@@ -141,25 +145,38 @@ uint8_t ai_load_picfile(const uint8_t *filename,uint16_t x,uint16_t y,uint16_t w
 		picinfo.S_Width=xLCD.width;
 		return FALSE;   
 	}
+  
+  printf("3333");
 	if(pic_phy.fillcolor==NULL)fast=0;//颜色填充函数未实现,不能快速显示
 	//显示的开始坐标点
 	picinfo.S_YOFF=y;
 	picinfo.S_XOFF=x;
+  
+  printf("4444");
 	//文件名传递		 
-	temp=f_typetell((char*)filename);	//得到文件的类型
+  
+  
+
+	temp=f_typetell(filename);	//得到文件的类型
+  
+  printf("5555");
 	switch(temp)
 	{											  
 		case T_BMP:
+      printf("bmp图片\n");
 			res=stdbmp_decode(filename); 				//解码bmp	  	  
 			break;
 		case T_JPG:
 		case T_JPEG:
+      printf("jpg图片\n");
 //			res=jpg_decode(filename,fast);				//解码JPG/JPEG	  	  
 			break;
 		case T_GIF:
+      printf("gif图片\n");
 //			res=gif_decode(filename,x,y,width,height);	//解码gif  	  
 			break;
 		default:
+      printf("error 图片\n");
 	 		res=PIC_FORMAT_ERR;  						//非图片格式!!!  
 			break;
 	}  											   

@@ -37,7 +37,7 @@ uint8_t bmpreadbuf[BMP_DBUF_SIZE];
 //filename:包含路径的文件名	       	  			  
 //返回值:0,成功;
 //		 其他,错误码.
-uint8_t stdbmp_decode(const uint8_t *filename) 
+uint8_t stdbmp_decode(char *filename) 
 {
 	FIL* f_bmp;
     uint16_t br;

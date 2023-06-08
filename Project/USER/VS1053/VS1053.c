@@ -728,7 +728,7 @@ long song_play(char *path,long startpos)
   uint8_t res, rval;
   uint8_t *databuf;
   uint16_t i = 0;
-  long length=0;
+  long length=startpos;
 
   rval = 0;
   
@@ -749,6 +749,7 @@ long song_play(char *path,long startpos)
       atk_mo1053_reset_decode_time(); /* 复位解码时间 */
       atk_mo1053_set_volume(vsset.mvol);	
       VS1053_CURRENTPOS=0;
+       Vs1053Status=VS1053_PLAY;
   }			
                        
   res = f_open(fmp3,path, FA_READ);              /* 打开文件 */
