@@ -987,16 +987,16 @@ JRESULT jd_decomp (
 
 FIL *f_jpeg;			//JPEGÎÄ¼şÖ¸Õë
 JDEC *jpeg_dev;   		//´ı½âÂë¶ÔÏó½á¹¹ÌåÖ¸Õë  
-u8  *jpg_buffer;    	//¶¨Òåjpeg½âÂë¹¤×÷Çø´óĞ¡(×îÉÙĞèÒª3092×Ö½Ú)£¬×÷Îª½âÑ¹»º³åÇø£¬±ØĞë4×Ö½Ú¶ÔÆë
+uint8_t  *jpg_buffer;    	//¶¨Òåjpeg½âÂë¹¤×÷Çø´óĞ¡(×îÉÙĞèÒª3092×Ö½Ú)£¬×÷Îª½âÑ¹»º³åÇø£¬±ØĞë4×Ö½Ú¶ÔÆë
 
 //¸øÕ¼ÄÚ´æ´óµÄÊı×é/½á¹¹ÌåÉêÇëÄÚ´æ
-u8 jpeg_mallocall(void)
+uint8_t jpeg_mallocall(void)
 {
 	f_jpeg=(FIL*)pic_memalloc(sizeof(FIL));
 	if(f_jpeg==NULL)return PIC_MEM_ERR;			//ÉêÇëÄÚ´æÊ§°Ü.	  
 	jpeg_dev=(JDEC*)pic_memalloc(sizeof(JDEC));
 	if(jpeg_dev==NULL)return PIC_MEM_ERR;		//ÉêÇëÄÚ´æÊ§°Ü.
-	jpg_buffer=(u8*)pic_memalloc(JPEG_WBUF_SIZE);
+	jpg_buffer=(uint8_t*)pic_memalloc(JPEG_WBUF_SIZE);
 	if(jpg_buffer==NULL)return PIC_MEM_ERR;		//ÉêÇëÄÚ´æÊ§°Ü. 
 	return 0;
 }
@@ -1014,7 +1014,7 @@ FIL  tf_jpeg;
 JDEC tjpeg_dev;   		  
 FIL  *f_jpeg=&tf_jpeg;						//JPEGÎÄ¼şÖ¸Õë
 JDEC *jpeg_dev=&tjpeg_dev;   				//´ı½âÂë¶ÔÏó½á¹¹ÌåÖ¸Õë   
-__align(4) u8 jpg_buffer[JPEG_WBUF_SIZE];	//¶¨Òåjpeg½âÂë¹¤×÷Çø´óĞ¡(×îÉÙĞèÒª3092×Ö½Ú)£¬×÷Îª½âÑ¹»º³åÇø£¬±ØĞë4×Ö½Ú¶ÔÆë
+__align(4) uint8_t jpg_buffer[JPEG_WBUF_SIZE];	//¶¨Òåjpeg½âÂë¹¤×÷Çø´óĞ¡(×îÉÙĞèÒª3092×Ö½Ú)£¬×÷Îª½âÑ¹»º³åÇø£¬±ØĞë4×Ö½Ú¶ÔÆë
 	
 #endif
 
@@ -1023,9 +1023,9 @@ __align(4) u8 jpg_buffer[JPEG_WBUF_SIZE];	//¶¨Òåjpeg½âÂë¹¤×÷Çø´óĞ¡(×îÉÙĞèÒª3092×
 //buf:ÊäÈëÊı¾İ»º³åÇø (NULL:Ö´ĞĞµØÖ·Æ«ÒÆ)
 //num:ĞèÒª´ÓÊäÈëÊı¾İÁ÷¶Á³öµÄÊı¾İÁ¿/µØÖ·Æ«ÒÆÁ¿
 //·µ»ØÖµ:¶ÁÈ¡µ½µÄ×Ö½ÚÊı/µØÖ·Æ«ÒÆÁ¿
-u32 jpeg_in_func(JDEC* jd,u8* buf,u32 num) 
+uint32_t jpeg_in_func(JDEC* jd,uint8_t* buf,uint32_t num) 
 { 
-    u32  rb; //¶ÁÈ¡µ½µÄ×Ö½ÚÊı
+    uint32_t  rb; //¶ÁÈ¡µ½µÄ×Ö½ÚÊı
     FIL *dev=(FIL*)jd->device;  //´ı½âÂëµÄÎÄ¼şµÄĞÅÏ¢£¬Ê¹ÓÃFATFSÖĞµÄFIL½á¹¹ÀàĞÍ½øĞĞ¶¨Òå
     if(buf)     				//¶ÁÈ¡Êı¾İÓĞĞ§£¬¿ªÊ¼¶ÁÈ¡Êı¾İ
     { 
@@ -1038,11 +1038,11 @@ u32 jpeg_in_func(JDEC* jd,u8* buf,u32 num)
 //rgbbuf:Ö¸ÏòµÈ´ıÊä³öµÄRGBÎ»Í¼Êı¾İµÄÖ¸Õë
 //rect:µÈ´ıÊä³öµÄ¾ØĞÎÍ¼ÏñµÄ²ÎÊı
 //·µ»ØÖµ:0,Êä³ö³É¹¦;1,Êä³öÊ§°Ü/½áÊøÊä³ö
-u32 jpeg_out_func_fill(JDEC* jd,void* rgbbuf,JRECT* rect) 
+uint32_t jpeg_out_func_fill(JDEC* jd,void* rgbbuf,JRECT* rect) 
 { 
-	u16 *pencolor=(u16*)rgbbuf;
-	u16 width=rect->right-rect->left+1;		//Ìî³äµÄ¿í¶È
-	u16 height=rect->bottom-rect->top+1;	//Ìî³äµÄ¸ß¶È 
+	uint16_t *pencolor=(uint16_t*)rgbbuf;
+	uint16_t width=rect->right-rect->left+1;		//Ìî³äµÄ¿í¶È
+	uint16_t height=rect->bottom-rect->top+1;	//Ìî³äµÄ¸ß¶È 
 	pic_phy.fillcolor(rect->left+picinfo.S_XOFF,rect->top+picinfo.S_YOFF,width,height,pencolor);//ÑÕÉ«Ìî³ä 
     return 0;    //·µ»Ø0,Ê¹µÃ½âÂë¹¤×÷¼ÌĞøÖ´ĞĞ 
 } 
@@ -1051,13 +1051,13 @@ u32 jpeg_out_func_fill(JDEC* jd,void* rgbbuf,JRECT* rect)
 //rgbbuf:Ö¸ÏòµÈ´ıÊä³öµÄRGBÎ»Í¼Êı¾İµÄÖ¸Õë
 //rect:µÈ´ıÊä³öµÄ¾ØĞÎÍ¼ÏñµÄ²ÎÊı
 //·µ»ØÖµ:0,Êä³ö³É¹¦;1,Êä³öÊ§°Ü/½áÊøÊä³ö
-u32 jpeg_out_func_point(JDEC* jd,void* rgbbuf,JRECT* rect) 
+uint32_t jpeg_out_func_point(JDEC* jd,void* rgbbuf,JRECT* rect) 
 { 
-	u16 i,j;
-	u16 realx=rect->left,realy=0;
-	u16 *pencolor=rgbbuf;
-	u16 width=rect->right-rect->left+1;		//Í¼Æ¬µÄ¿í¶È
-	u16 height=rect->bottom-rect->top+1;	//Í¼Æ¬µÄ¸ß¶È
+	uint16_t i,j;
+	uint16_t realx=rect->left,realy=0;
+	uint16_t *pencolor=rgbbuf;
+	uint16_t width=rect->right-rect->left+1;		//Í¼Æ¬µÄ¿í¶È
+	uint16_t height=rect->bottom-rect->top+1;	//Í¼Æ¬µÄ¸ß¶È
    	for(i=0;i<height;i++)//y×ø±ê
 	{
 		realy=(picinfo.Div_Fac*(rect->top+i))>>13;//Êµ¼ÊY×ø±ê											 
@@ -1086,10 +1086,10 @@ u32 jpeg_out_func_point(JDEC* jd,void* rgbbuf,JRECT* rect)
 //filename:jpeg/jpgÂ·¾¶+ÎÄ¼şÃû
 //fast:Ê¹ÄÜĞ¡Í¼Æ¬(Í¼Æ¬³ß´çĞ¡ÓÚµÈÓÚÒº¾§·Ö±æÂÊ)¿ìËÙ½âÂë,0,²»Ê¹ÄÜ;1,Ê¹ÄÜ.
 //·µ»ØÖµ:0,½âÂë³É¹¦;ÆäËû,½âÂëÊ§°Ü.
-u8 jpg_decode(const u8 *filename,u8 fast)
+uint8_t jpg_decode(const uint8_t *filename,uint8_t fast)
 {  
-	u8 res=0;	//·µ»ØÖµ 
-	u8 scale;	//Í¼ÏñÊä³ö±ÈÀı 0,1/2,1/4,1/8  
+	uint8_t res=0;	//·µ»ØÖµ 
+	uint8_t scale;	//Í¼ÏñÊä³ö±ÈÀı 0,1/2,1/4,1/8  
 	UINT (*outfun)(JDEC*, void*, JRECT*);
 	
 #if JPEG_USE_MALLOC == 1	//Ê¹ÓÃmalloc
