@@ -76,7 +76,7 @@ void LCD_Circle(uint16_t x0,uint16_t y0,uint8_t r, uint16_t color);
 // 画圆
 
 void LCD_Image(uint16_t x, uint16_t y, uint16_t width, uint16_t height, const uint8_t *image);
-void LCD_Chinese16ForFile(uint32_t x, uint32_t y, uint8_t index, uint16_t fColor, uint16_t bColor);
+
 void drawAscii(uint16_t x,uint16_t y,uint8_t num, uint8_t size,uint16_t fColor, uint16_t bColor);
 // 大量Ascii字符数据及几个特定汉字16*16字库数据以及一副LOG图数据在font.h文件中，适合固定需要输出
 
@@ -86,6 +86,7 @@ int LCD_String(uint16_t x,uint16_t y,char* pFont, uint8_t size,uint16_t fColor, 
 void LED_ShowNum(uint8_t x,uint8_t y,uint32_t num,uint8_t len,uint8_t size1,uint16_t fColor, uint16_t bColor);
 	
 // void LCD_Chinese32ForFile(uint32_t x, uint32_t y, uint8_t index, uint16_t fColor, uint16_t bColor);
+// void LCD_Chinese16ForFile(uint32_t x, uint32_t y, uint8_t index, uint16_t fColor, uint16_t bColor);
 // 特定汉字32*32字库数据没有放入font.h，故此函数无法使用
 
 

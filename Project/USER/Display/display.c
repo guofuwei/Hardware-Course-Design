@@ -10,6 +10,8 @@ extern uint8_t SelectIndex;
 extern bool SubMenuOk;
 extern char NameList[NAMELIST_NUM][NAMELIST_MAX_LEN];
 extern uint8_t FileNum;
+extern KEYSTATUS KeyStatus;
+extern char Buffer[BUFFER_SIZE];
 
 uint8_t private_cursor_check(void)
 {
@@ -90,6 +92,7 @@ void display_margin(uint8_t size)
 void draw_main_menu(void)
 {
   // 菜单复位
+  KeyStatus=KEY_DENY;
   MenuInfo=MAIN_MENU;
   SelectIndex=0;
   SubMenuOk=true;
@@ -103,6 +106,7 @@ void draw_main_menu(void)
   display_string_custom("查看音乐文件",MENU_HEIGHT_SIZE,WHITE,BLACK,5,Cursor.y_cur);
   display_string_custom("查看说明",MENU_HEIGHT_SIZE,WHITE,BLACK,5,Cursor.y_cur);
   draw_select();
+  KeyStatus=KEY_ACCEPT;
 }
 
 void draw_txt_menu(void)
@@ -114,11 +118,13 @@ void draw_txt_menu(void)
   set_head_string("文本文件菜单",WHITE,GOODBLUE);
   clear_screen_content();
   
-  
+  printf("aaaa");
   FRESULT res=f_scandir(TXT_FOLDER);
+  printf("bbbbb");
   if(res!=FR_OK)
   {
     f_scandir_handle(res);
+    printf("cccc");
     display_string("文件扫描失败",MENU_HEIGHT_SIZE,WHITE,BLACK);
     SubMenuOk=false;
     return;
@@ -192,6 +198,37 @@ void draw_music_menu(void)
   draw_select();
 }
 
+void show_txt_content(void)
+{
+  MenuInfo=TXT_PIC_DETAIL_MENU;
+  printf("SelectIndex:%d",SelectIndex);
+  // 获取文件名
+  char file_name[NAMELIST_MAX_LEN]="0";
+  strcpy(file_name,NameList[SelectIndex]);
+  char full_name[10+NAMELIST_MAX_LEN]="0:/txt/";
+  strcat(full_name,file_name);
+  printf("filename:%s",full_name);
+  
+  // 打开文件并读取
+  UINT has_read=0;
+  FIL fp;
+  memset(Buffer,'\0',sizeof(Buffer));
+  FRESULT res=f_open(&fp,full_name,FA_READ);
+//  printf("FRESULT:%d",res);
+	f_read(&fp,Buffer,NAMELIST_MAX_LEN,&has_read);
+	f_close(&fp);
+  
+  // 显示读取到的内容
+  printf("hasread:%d",has_read);
+  printf("%s",Buffer);
+  display_string(Buffer,16,WHITE,BLACK);
+}
+
+void show_pic_content(void)
+{
+}
+
+// 选择指示
 void clear_select(void)
 {
   uint8_t y=1+SCREEN_HEAD_HEIGHT+MENU_HEIGHT_SIZE*(SelectIndex+1);

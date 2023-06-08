@@ -65,8 +65,9 @@ SYSINFO SysInfo=SYS_OK;     // 系统状态
 MENUINFO MenuInfo=LOADING_MENU; // 当前在哪一个菜单
 KEYSTATUS KeyStatus=KEY_DENY;
 uint8_t SelectIndex=0; // 当前选中的index
-bool SubMenuOk=true;
-uint8_t FileNum=0;
+bool SubMenuOk=true;  // 子菜单是否ok
+uint8_t FileNum=0;    // 扫描出来的文件个数，防止select指示过度
+char Buffer[BUFFER_SIZE]="0";
 
 /* USER CODE END PV */
 
@@ -244,7 +245,7 @@ int main(void)
     KeyStatus=KEY_ACCEPT;
   }
 
-	song_play("0:/music/1.mp3");
+//	song_play("0:/music/1.mp3");
 	
   /* USER CODE END 2 */
 
@@ -421,6 +422,8 @@ void txt_menu_handle(uint16_t GPIO_Pin)
   }
   else if(GPIO_Pin==KEY2_Pin  && SubMenuOk==true )
   {
+//    printf("show txt content");
+    show_txt_content();
   }
   else if(GPIO_Pin==KEY3_Pin)
   {

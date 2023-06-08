@@ -157,6 +157,7 @@ typedef enum{
 #define MENU_HEIGHT_SIZE 16
 #define NAMELIST_NUM  10
 #define NAMELIST_MAX_LEN 15
+#define BUFFER_SIZE 1024
 
 void main_state_machine(uint16_t GPIO_Pin);
 void main_menu_handle(uint16_t GPIO_Pin);

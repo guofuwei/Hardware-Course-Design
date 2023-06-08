@@ -413,28 +413,28 @@ void LCD_Image(uint16_t x, uint16_t y, uint16_t width, uint16_t height, const ui
  *          uint16_t fColor  字色
  *          uint16_t bColor  底色
  *****************************************************************/
-void LCD_Chinese16ForFile(uint32_t x, uint32_t y, uint8_t index, uint16_t fColor, uint16_t bColor)	
-{  
-	LCD_SPI_Init;                                        // 防止SPI参数被其它设备修改了
-	
-	const uint8_t *temp=hanzi16 + index*32;              // 获取字体数据在数组中的的起始位置 
+//void LCD_Chinese16ForFile(uint32_t x, uint32_t y, uint8_t index, uint16_t fColor, uint16_t bColor)	
+//{  
+//	LCD_SPI_Init;                                        // 防止SPI参数被其它设备修改了
+//	
+//	const uint8_t *temp=hanzi16 + index*32;              // 获取字体数据在数组中的的起始位置 
 
-	for(uint8_t j=0;j<16;j++)
-	{
-		setCursor(x,y+j ,x+16, y+j+16);
-		for(uint8_t k=0;k<2;k++)
-		{
-			for(uint8_t i=0;i<8;i++)
-			{ 		     
-			 	if((*temp&(1<<i))!=0)			
-					sendShort(fColor);				
-				else			
-					sendShort(bColor);				 
-			}
-			temp++;
-		}
-	 }
-}	
+//	for(uint8_t j=0;j<16;j++)
+//	{
+//		setCursor(x,y+j ,x+16, y+j+16);
+//		for(uint8_t k=0;k<2;k++)
+//		{
+//			for(uint8_t i=0;i<8;i++)
+//			{ 		     
+//			 	if((*temp&(1<<i))!=0)			
+//					sendShort(fColor);				
+//				else			
+//					sendShort(bColor);				 
+//			}
+//			temp++;
+//		}
+//	 }
+//}	
 
 /******************************************************************
  * 函数名： LCD_Chinese32ForFile
@@ -445,28 +445,28 @@ void LCD_Chinese16ForFile(uint32_t x, uint32_t y, uint8_t index, uint16_t fColor
  *          uint16_t fColor  字体颜色
  *          uint16_t bColor  背景颜色
  *****************************************************************/
-void LCD_Chinese32ForFile(uint32_t x, uint32_t y, uint8_t index, uint16_t fColor, uint16_t bColor)	
-{ 
-	LCD_SPI_Init;                                    // 防止SPI参数被其它设备修改了
-	
-	const uint8_t *temp = hanzi32 + index*128;       // 获取字体数据在数组中的的起始位置 
+//void LCD_Chinese32ForFile(uint32_t x, uint32_t y, uint8_t index, uint16_t fColor, uint16_t bColor)	
+//{ 
+//	LCD_SPI_Init;                                    // 防止SPI参数被其它设备修改了
+//	
+//	const uint8_t *temp = hanzi32 + index*128;       // 获取字体数据在数组中的的起始位置 
 
-	for(uint8_t j=0; j<32; j++)                      // 一行一行地向下写
-	{
-		setCursor(x,y+j,x+32, y+j+32);                 // 只要定位了首个坐标，后面发送的数据，就会向后排列，直至收到新的命令
-		for(uint8_t k=0;k<4;k++)
-		{
-			for(uint8_t i=0;i<8;i++)
-			{ 		     
-			 	if((*temp&(1<<i))!=0)				
-					sendShort(fColor);				
-				else
-					sendShort(bColor);				 
-			}
-			temp++;
-		}
-	 }
-}	
+//	for(uint8_t j=0; j<32; j++)                      // 一行一行地向下写
+//	{
+//		setCursor(x,y+j,x+32, y+j+32);                 // 只要定位了首个坐标，后面发送的数据，就会向后排列，直至收到新的命令
+//		for(uint8_t k=0;k<4;k++)
+//		{
+//			for(uint8_t i=0;i<8;i++)
+//			{ 		     
+//			 	if((*temp&(1<<i))!=0)				
+//					sendShort(fColor);				
+//				else
+//					sendShort(bColor);				 
+//			}
+//			temp++;
+//		}
+//	 }
+//}	
 
 /******************************************************************
  * 函数名： drawAscii
