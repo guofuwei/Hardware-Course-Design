@@ -148,7 +148,6 @@ void spi1_init(void)
     __HAL_SPI_ENABLE(&hspi1);                                 /* 使能SPI1 */
     
     spi1_read_write_byte(0Xff);                                        /* 启动传输, 实际上就是产生8个时钟脉冲, 达到清空DR的作用, 非必需 */
-
 }
 
 /**

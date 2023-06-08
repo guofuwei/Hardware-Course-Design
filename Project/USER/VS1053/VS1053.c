@@ -172,7 +172,7 @@ uint8_t atk_mo1053_reset(void)
     {
         retry++;
         //delay_us(50);
-			HAL_Delay(1);
+        HAL_Delay(1);
     }
 
     HAL_Delay(20);
@@ -718,96 +718,95 @@ void atk_mo1053_set_all(void)
 
 long song_play(char *path,long startpos)
 {
-	  FIL *fmp3;
-    uint16_t br;
-    uint8_t res, rval;
-    uint8_t *databuf;
-    uint16_t i = 0;
-	  long length=0;
+//  atk_mo1053_init(); ////!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  //VS10XX_XCS(0);
+  //VS10XX_XDCS(0);
+  
+  //atk_mo1053_init();
+  FIL *fmp3;
+  uint16_t br;
+  uint8_t res, rval;
+  uint8_t *databuf;
+  uint16_t i = 0;
+  long length=0;
 
-	
-	   rval = 0;
-		
-    fmp3 = (FIL *)mymalloc(SRAMIN, sizeof(FIL));                        /* 申请内存*/
-    databuf = (uint8_t *)mymalloc(SRAMIN, 4096);                       /* 开辟4096字节的内存区域 */
+  rval = 0;
+  
+  fmp3 = (FIL *)mymalloc(SRAMIN, sizeof(FIL));                        /* 申请内存*/
+  databuf = (uint8_t *)mymalloc(SRAMIN, 4096);                       /* 开辟4096字节的内存区域 */
 
-    atk_mo1053_reset();
-    atk_mo1053_soft_reset();	
-	 //sset.mvol = 200; 
+  atk_mo1053_reset();
+  atk_mo1053_soft_reset();	
+ //sset.mvol = 200; 
 
-    if (databuf == NULL || fmp3 == NULL)rval = 0XFF ;                   /* 内存申请失败 */
+  if (databuf == NULL || fmp3 == NULL)rval = 0XFF ;                   /* 内存申请失败 */
 
-    if (rval == 0)
-    {
-			if(startpos==0)
-        atk_mo1053_restart_play();      /* 重启播放 */
-        atk_mo1053_set_all(); /* 设置音量等信息 */
-        atk_mo1053_reset_decode_time(); /* 复位解码时间 */
-				atk_mo1053_set_volume(vsset.mvol);	
-			  VS1053_CURRENTPOS=0;
-		}			
-                            
-
-      res = f_open(fmp3,path, FA_READ);              /* 打开文件 */
-			f_lseek(fmp3,startpos);
-			if(res==0)
-			{
-				HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
-			}
-
-        if (res == 0)                                                   /* 打开成功 */
-        {
-					//atk_mo1053_spi_speed_high();
-           // atk_mo1053_spi_speed_high();                                /* 高速 */
-					spi1_set_speed(SPI_SPEED_16);
-
-            while (rval == 0)
-            {
-                res = f_read(fmp3, databuf, 4096, (UINT *)&br);         /* 读出4096个字节 */
-                i = 0;
-							 length+=br;
-
-                do                                                      /* 主播放循环 */
-                {
-                    if (atk_mo1053_send_music_data(databuf + i) == 0)   /* 给VS10XX发送音频数据 */
-                    {
-                        i += 32;
-                    }
-                    else
-                    {
+  if (rval == 0)
+  {
+    if(startpos==0)
+      atk_mo1053_restart_play();      /* 重启播放 */
+      atk_mo1053_set_all(); /* 设置音量等信息 */
+      atk_mo1053_reset_decode_time(); /* 复位解码时间 */
+      atk_mo1053_set_volume(vsset.mvol);	
+      VS1053_CURRENTPOS=0;
+  }			
                        
-                     }
-                       // audio_msg_show(fmp3->obj.objsize);              /* 显示信息 */
-                    
-                } while (i < 4096);   
-								/* 循环发送4096个字节 */
-								switch(Vs1053Status)
-								{
-									case VS1053_STOP:
-										Vs1053Status=VS1053_PLAY;
-										VS1053_CURRENTPOS=length;
-									  return 0;
-									default: break;
-									
-								}
-							
-                if (br != 4096 || res != 0)
-                {
-                    //rval = KEY0_PRES;
-									VS1053_CURRENTPOS=0;
-                    break;                                              /* 读完了 */
-                }
-            }
-
-            f_close(fmp3);
-        }
-        else
+  res = f_open(fmp3,path, FA_READ);              /* 打开文件 */
+  f_lseek(fmp3,startpos);
+  if(res==0)
+  {
+    HAL_GPIO_WritePin(GPIOA, GPIO_PIN_8, GPIO_PIN_RESET);
+  }
+  if (res == 0)                                                   /* 打开成功 */
+  {
+    //atk_mo1053_spi_speed_high();
+      atk_mo1053_spi_speed_high();                                /* 高速 */
+    //spi1_set_speed(SPI_SPEED_8);
+    while (rval == 0)
+    {
+       res = f_read(fmp3, databuf, 4096, (UINT *)&br);         /* 读出4096个字节 */
+       i = 0;
+       length+=br;
+        do                                                      /* 主播放循环 */
         {
-            rval = 0XFF;                                                /* 出现错误 */
+          if (atk_mo1053_send_music_data(databuf + i) == 0)   /* 给VS10XX发送音频数据 */
+          {
+            i += 32;
+          }
+          else
+          {
+             
+          }
+          // audio_msg_show(fmp3->obj.objsize);              /* 显示信息 */
+            
+        } while (i < 4096);   
+        /* 循环发送4096个字节 */
+        switch(Vs1053Status)
+        {
+          case VS1053_STOP:
+            Vs1053Status=VS1053_PLAY;
+            VS1053_CURRENTPOS=length;
+            return 0;
+          default: break;
+        }     
+        if (br != 4096 || res != 0)
+        {
+            //rval = KEY0_PRES;
+          VS1053_CURRENTPOS=0;
+            break;                                              /* 读完了 */
         }
+      }
+      f_close(fmp3);
+    }
+    else
+    {
+        rval = 0XFF;                                                /* 出现错误 */
+    }
     myfree(SRAMIN,databuf);
     myfree(SRAMIN,fmp3);
-				return 0;
+//    VS10XX_XCS(1);
+//    VS10XX_XDCS(1);
+		return 0;
 }
 
 void addvolume()

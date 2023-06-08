@@ -3,6 +3,7 @@
 #include "lcd_st7735.h"
 #include "main.h"
 #include "fatfs.h"
+#include "VS1053.h"
 
 CURSOR Cursor={1,1+SCREEN_HEAD_HEIGHT};
 extern MENUINFO MenuInfo;
@@ -12,6 +13,8 @@ extern char NameList[NAMELIST_NUM][NAMELIST_MAX_LEN];
 extern uint8_t FileNum;
 extern KEYSTATUS KeyStatus;
 extern char Buffer[BUFFER_SIZE];
+extern char SongFullName[10+NAMELIST_MAX_LEN]; // 用于音乐播放
+extern bool IsPlay;
 
 uint8_t private_cursor_check(void)
 {
@@ -29,7 +32,7 @@ void display_string(char* pFont, uint8_t size,uint16_t fColor, uint16_t bColor)
 {
 	uint8_t res=private_cursor_check();
 	if(res!=0)return;
-	drawString(1,Cursor.y_cur,pFont,size,fColor,bColor);
+	LCD_String(1,Cursor.y_cur,pFont,size,fColor,bColor);
 	Cursor.y_cur+=size;
 }
 
@@ -178,8 +181,9 @@ void draw_music_menu(void)
   set_head_string("音乐文件菜单",WHITE,GOODBLUE);
   clear_screen_content();
   
-  
+  printf("1111");
   FRESULT res=f_scandir(MUSIC_FOLDER);
+   printf("2222");
   if(res!=FR_OK)
   {
     f_scandir_handle(res);
@@ -200,14 +204,14 @@ void draw_music_menu(void)
 
 void show_txt_content(void)
 {
-  MenuInfo=TXT_PIC_DETAIL_MENU;
-  printf("SelectIndex:%d",SelectIndex);
+  MenuInfo=TXT_DETAIL_MENU;
+//  printf("SelectIndex:%d",SelectIndex);
   // 获取文件名
-  char file_name[NAMELIST_MAX_LEN]="0";
+  char file_name[NAMELIST_MAX_LEN]="\0";
   strcpy(file_name,NameList[SelectIndex]);
   char full_name[10+NAMELIST_MAX_LEN]="0:/txt/";
   strcat(full_name,file_name);
-  printf("filename:%s",full_name);
+//  printf("filename:%s",full_name);
   
   // 打开文件并读取
   UINT has_read=0;
@@ -215,17 +219,40 @@ void show_txt_content(void)
   memset(Buffer,'\0',sizeof(Buffer));
   FRESULT res=f_open(&fp,full_name,FA_READ);
 //  printf("FRESULT:%d",res);
-	f_read(&fp,Buffer,NAMELIST_MAX_LEN,&has_read);
+	f_read(&fp,Buffer,1024,&has_read);
 	f_close(&fp);
   
   // 显示读取到的内容
-  printf("hasread:%d",has_read);
-  printf("%s",Buffer);
-  display_string(Buffer,16,WHITE,BLACK);
+  printf("hasread:%d\n",has_read);
+  printf("%s\nd",Buffer);
+
+  set_head_string(file_name, WHITE, GOODBLUE);
+  clear_screen_content();
+  display_string(Buffer,16,WHITE,BLACK);  
 }
 
 void show_pic_content(void)
 {
+}
+
+void play_song_content(void)
+{
+  MenuInfo=MUSIC_DETAIL_MENU;
+  
+  // 获取文件名
+  char file_name[NAMELIST_MAX_LEN]="\0";
+  strcpy(file_name,NameList[SelectIndex]);
+  memset(SongFullName,'\0',sizeof(SongFullName));
+  strcpy(SongFullName,"0:/music/");
+  strcat(SongFullName,file_name);
+  //  printf("filename:%s",full_name);
+
+  
+  set_head_string(file_name, WHITE, GOODBLUE);
+  clear_screen_content();
+  display_string("正在播放音乐",16,WHITE,BLACK);
+  
+  IsPlay=true;
 }
 
 // 选择指示

@@ -69,11 +69,13 @@ uint8_t SelectIndex = 0; // 当前选中的index
 bool SubMenuOk = true;   // 子菜单是否ok
 uint8_t FileNum = 0;     // 扫描出来的文件个数，防止select指示过度
 char Buffer[BUFFER_SIZE] = "0";
-bool SubMenuOk = true;
-uint8_t FileNum = 0;
 uint8_t volume = 200;
 long VS1053_CURRENTPOS = 0;
 extern _vs10xx_obj vsset;
+
+// 用于在主函数中播放
+char SongFullName[10+NAMELIST_MAX_LEN]="\0";
+bool IsPlay=false;
 
 /* USER CODE END PV */
 
@@ -129,6 +131,7 @@ int main(void)
   W25QX_NSS_HIGH;  // 但仍要注意切换同一SPI从设备的片选CS
   LCD_Init(BLACK); // LCD驱动ST7735先初始化
   W25qx_Init();    // W25qx再初始化（内带字库）
+  // atk_mo1053_init();// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   // 初始化屏幕标题
   set_head_string("系统初始化中", WHITE, GOODBLUE);
@@ -145,12 +148,14 @@ int main(void)
   res = f_scandir(ROOT_FOLDER);
   f_scandir_handle(res);
 
-  uint8_t i = 0;
-  for (i = 0; i < NAMELIST_NUM; i++)
-  {
-    printf("%s\n", NameList[i]);
-  }
+//  uint8_t i = 0;
+//  for (i = 0; i < NAMELIST_NUM; i++)
+//  {
+//    printf("%s\n", NameList[i]);
+//  }
 
+
+  printf("你好\n");
   if (res != FR_OK)
   {
     SysInfo = SYS_SD_ERROR;
@@ -165,7 +170,7 @@ int main(void)
     KeyStatus = KEY_ACCEPT;
   }
 
-  //	song_play("0:/music/1.mp3");
+  song_play("0:/music/1.mp3",0);
 
   /* USER CODE END 2 */
 
@@ -174,7 +179,12 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+//    if(IsPlay==true)
+//    {
+//      song_play(SongFullName,0);
+//      IsPlay=false;
+//    }
+//    HAL_Delay(100);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -240,6 +250,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     main_state_machine(GPIO_Pin);
   }
 }
+
 void main_state_machine(uint16_t GPIO_Pin)
 {
   if (SysInfo != SYS_OK)
@@ -267,9 +278,15 @@ void main_state_machine(uint16_t GPIO_Pin)
     case MUSIC_MENU:
       music_menu_handle(GPIO_Pin);
       break;
-    case TXT_PIC_DETAIL_MENU:
+    case TXT_DETAIL_MENU:
+      txt_detail_handle(GPIO_Pin);
+      break;
+    case PIC_DETAIL_MENU:
+      pic_detail_handle(GPIO_Pin);
       break;
     case MUSIC_DETAIL_MENU:
+      printf("music_detail_menu\n");
+      music_detail_handle(GPIO_Pin);
       break;
     }
   }
@@ -395,10 +412,77 @@ void music_menu_handle(uint16_t GPIO_Pin)
   }
   else if (GPIO_Pin == KEY2_Pin && SubMenuOk == true)
   {
+    play_song_content();
   }
   else if (GPIO_Pin == KEY3_Pin)
   {
     draw_main_menu();
+  }
+  else
+  {
+    LED_RED_ON;
+    HAL_Delay(100);
+    LED_RED_OFF;
+  }
+}
+
+
+void txt_detail_handle(uint16_t GPIO_Pin)
+{
+  if (GPIO_Pin == KEY1_Pin && SubMenuOk == true)
+  {
+  }
+  else if (GPIO_Pin == KEY2_Pin && SubMenuOk == true)
+  {
+  }
+  else if (GPIO_Pin == KEY3_Pin)
+  {
+    draw_txt_menu();
+  }
+  else
+  {
+    LED_RED_ON;
+    HAL_Delay(100);
+    LED_RED_OFF;
+  }
+}
+
+void pic_detail_handle(uint16_t GPIO_Pin)
+{
+  if (GPIO_Pin == KEY1_Pin && SubMenuOk == true)
+  {
+  }
+  else if (GPIO_Pin == KEY2_Pin && SubMenuOk == true)
+  {
+  }
+  else if (GPIO_Pin == KEY3_Pin)
+  {
+    draw_pic_menu();
+  }
+  else
+  {
+    LED_RED_ON;
+    HAL_Delay(100);
+    LED_RED_OFF;
+  }
+}
+
+void music_detail_handle(uint16_t GPIO_Pin)
+{
+  if (GPIO_Pin == KEY1_Pin && SubMenuOk == true)
+  {
+  }
+  else if (GPIO_Pin == KEY2_Pin && SubMenuOk == true)
+  {
+  }
+  else if (GPIO_Pin == KEY3_Pin)
+  {
+    Vs1053Status=VS1053_STOP;
+    IsPlay=false;
+//    VS10XX_XCS(1);
+//    VS10XX_XDCS(1);
+    HAL_Delay(500);
+    draw_music_menu();
   }
   else
   {
