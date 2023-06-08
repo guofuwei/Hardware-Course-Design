@@ -178,8 +178,8 @@ int main(void)
   }
 
   
-  clear_screen_all();
-  ai_load_picfile("0:/pic/avatar.bmp\0",1,1,64,64,1);
+//  clear_screen_all();
+//  ai_load_picfile("0:/pic/avatar.bmp\0",1,1,64,64,1);
   //song_play("0:/music/3.mp3",0);
   
 
@@ -203,7 +203,7 @@ int main(void)
     {
       song_play(SongFullName,VS1053_CURRENTPOS);
       Vs1053Status=VS1053_PLAY;
-      IsPlay=false;
+      IsPlay=false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
     }
     
   }
@@ -318,6 +318,9 @@ void main_state_machine(uint16_t GPIO_Pin)
     case MUSIC_MENU:
       music_menu_handle(GPIO_Pin);
       break;
+    case README_MENU:
+      readme_menu_handle(GPIO_Pin);
+      break;
     case TXT_DETAIL_MENU:
       txt_detail_handle(GPIO_Pin);
       break;
@@ -327,6 +330,9 @@ void main_state_machine(uint16_t GPIO_Pin)
     case MUSIC_DETAIL_MENU:
       printf("music_detail_menu\n");
       music_detail_handle(GPIO_Pin);
+      break;
+    case README_DETAIL_MENU:
+      readme_detail_handle(GPIO_Pin);
       break;
     }
   }
@@ -360,6 +366,7 @@ void main_menu_handle(uint16_t GPIO_Pin)
       draw_music_menu();
       break;
     case 3:
+      draw_readme_menu();
       break;
     default:
       LED_RED_ON;
@@ -413,6 +420,7 @@ void txt_menu_handle(uint16_t GPIO_Pin)
 
 void pic_menu_handle(uint16_t GPIO_Pin)
 {
+  printf("pic_menu_handle\n");
   if (GPIO_Pin == KEY1_Pin && SubMenuOk == true)
   {
     clear_select();
@@ -425,6 +433,7 @@ void pic_menu_handle(uint16_t GPIO_Pin)
   }
   else if (GPIO_Pin == KEY2_Pin && SubMenuOk == true)
   {
+    show_pic_content();
   }
   else if (GPIO_Pin == KEY3_Pin)
   {
@@ -519,7 +528,6 @@ void music_detail_handle(uint16_t GPIO_Pin)
   {
 //    VS10XX_XCS(1);
 //    VS10XX_XDCS(1);
-    
     draw_music_menu();
 		HAL_Delay(100);
 		Vs1053Status=VS1053_STOP;
@@ -536,29 +544,77 @@ void music_detail_handle(uint16_t GPIO_Pin)
 
 void music_run_stop()
 {
-      if(!IsStop)
-    {
-      IsStop=1;
-    Vs1053Status = VS1053_STOP;
-    IsPlay=false;
-    
+  if(!IsStop)
+  {
+    IsStop=1;
+  Vs1053Status = VS1053_STOP;
+  IsPlay=false;
+  
+  }
+  else
+  {
+    if(IsPlay)
+    {      
+      IsPlay=false;
+      Vs1053Status=VS1053_STOP;        
     }
     else
     {
-      if(IsPlay)
-      {      
-        IsPlay=false;
-        Vs1053Status=VS1053_STOP;        
-      }
-      else
-      {
-        IsPlay=true;
-      }
+      IsPlay=true;
     }
-  
-
+  }
 }
 
+void readme_menu_handle(uint16_t GPIO_Pin)
+{
+  // 向下翻按钮
+  if (GPIO_Pin == KEY1_Pin)
+  {
+    clear_select();
+    SelectIndex = SelectIndex + 1;
+    if (SelectIndex >= 3)
+    {
+      SelectIndex = 0;
+    }
+    draw_select();
+  }
+  // 确定按钮
+  else if (GPIO_Pin == KEY2_Pin)
+  {
+    show_readme_content();
+  }
+  // 返回或者取消按钮（在主菜单无用）
+  else if (GPIO_Pin == KEY3_Pin)
+  {
+    draw_main_menu();
+  }
+  else
+  {
+    LED_RED_ON;
+    HAL_Delay(100);
+    LED_RED_OFF;
+  }
+}
+
+void readme_detail_handle(uint16_t GPIO_Pin)
+{
+  if (GPIO_Pin == KEY1_Pin && SubMenuOk == true)
+  {
+  }
+  else if (GPIO_Pin == KEY2_Pin && SubMenuOk == true)
+  {
+  }
+  else if (GPIO_Pin == KEY3_Pin)
+  {
+    draw_readme_menu();
+  }
+  else
+  {
+    LED_RED_ON;
+    HAL_Delay(100);
+    LED_RED_OFF;
+  }
+}
 /* USER CODE END 4 */
 
 /**

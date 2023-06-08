@@ -92,7 +92,7 @@ FRESULT f_scandir(SCAN_FOLDER scan_folder)
       LED_RED_OFF;
       return FR_INVALID_PARAMETER;
   }
-  printf("%d",res);
+//  printf("%d",res);
 	if (res == FR_OK) 
   {
     for (;;) {
@@ -304,8 +304,8 @@ uint8_t f_typetell(char *fname)
 	while(i<len)
 	{
 		i++;
-    printf("i:%d\n",i);
-    printf("fname:%s\n",fname);
+//    printf("i:%d\n",i);
+//    printf("fname:%s\n",fname);
 		if(*fname=='.') break;//偏移到了最后了.
 		fname++;
     //if(fname[i]=='.') break;//偏移到了最后了.

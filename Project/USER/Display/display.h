@@ -34,6 +34,7 @@ void draw_main_menu(void);
 void draw_txt_menu(void);
 void draw_pic_menu(void);
 void draw_music_menu(void);
+void draw_readme_menu(void);
 
 void clear_select(void);
 void draw_select(void);
@@ -42,6 +43,7 @@ void draw_select(void);
 void show_txt_content(void);
 void show_pic_content(void);
 void play_song_content(void);
+void show_readme_content(void);
 
 #ifdef __cplusplus
 }
