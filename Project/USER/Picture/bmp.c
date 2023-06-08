@@ -239,10 +239,10 @@ uint8_t minibmp_decode(uint8_t *filename,uint16_t x,uint16_t y,uint16_t width,ui
 	uint16_t rowpix=0;			//水平方向像素数	  
 	uint8_t rowadd;				//每行填充字节数
 
-	uint16_t tmp_color;
+//	uint16_t tmp_color;
 
-	uint8_t alphabend=0xff;		//代表透明色为0，完全不透明
-	uint8_t alphamode=mode>>6;	//得到模式值,0/1/2
+//	uint8_t alphabend=0xff;		//代表透明色为0，完全不透明
+//	uint8_t alphamode=mode>>6;	//得到模式值,0/1/2
 	BITMAPINFO *pbmp;   	//临时指针		 
 	//得到窗体尺寸
 	picinfo.S_Height=height;

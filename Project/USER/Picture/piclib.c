@@ -154,10 +154,10 @@ uint8_t ai_load_picfile(const uint8_t *filename,uint16_t x,uint16_t y,uint16_t w
 			break;
 		case T_JPG:
 		case T_JPEG:
-			res=jpg_decode(filename,fast);				//解码JPG/JPEG	  	  
+//			res=jpg_decode(filename,fast);				//解码JPG/JPEG	  	  
 			break;
 		case T_GIF:
-			res=gif_decode(filename,x,y,width,height);	//解码gif  	  
+//			res=gif_decode(filename,x,y,width,height);	//解码gif  	  
 			break;
 		default:
 	 		res=PIC_FORMAT_ERR;  						//非图片格式!!!  

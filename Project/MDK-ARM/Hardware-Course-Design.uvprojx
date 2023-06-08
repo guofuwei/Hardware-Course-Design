@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/STM32F1xx_HAL_Driver/Inc;../Middlewares/Third_Party/FatFs/src;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../USER/Display;../USER/Sdcard;../USER/VS1053;../USER/W25qxx;../USER/KeyBoard</IncludePath>
+              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/STM32F1xx_HAL_Driver/Inc;../Middlewares/Third_Party/FatFs/src;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../USER/Display;../USER/Sdcard;../USER/VS1053;../USER/W25qxx;../USER/KeyBoard;..\USER\Picture</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -692,6 +692,41 @@
               <FileName>keyboard.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\USER\KeyBoard\keyboard.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Application/User/Picture</GroupName>
+          <Files>
+            <File>
+              <FileName>bmp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Picture\bmp.c</FilePath>
+            </File>
+            <File>
+              <FileName>piclib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Picture\piclib.c</FilePath>
+            </File>
+            <File>
+              <FileName>bmp.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\Picture\bmp.h</FilePath>
+            </File>
+            <File>
+              <FileName>gif.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\Picture\gif.h</FilePath>
+            </File>
+            <File>
+              <FileName>piclib.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\Picture\piclib.h</FilePath>
+            </File>
+            <File>
+              <FileName>tjpgd.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\Picture\tjpgd.h</FilePath>
             </File>
           </Files>
         </Group>
