@@ -60,9 +60,12 @@ typedef __PACKED_STRUCT
 } _vs10xx_obj;
 
 
-extern _vs10xx_obj vsset;   /* VS10XX…Ë÷√ */
-extern long VS1053_CURRENTPOS;
-extern VS1053STATUS  Vs1053Status;
+typedef enum{
+	VS1053_PLAY,
+	VS1053_STOP
+}VS1053STATUS; // VS1053◊¥Ã¨
+
+
 
 /* VS10XX ∂¡–¥√¸¡Ó */
 #define VS_WRITE_COMMAND    0x02

@@ -131,34 +131,7 @@ void Error_Handler(void);
 
 
 
-// 自己添加的定义
-typedef enum{
-  SYS_OK =0,
-  SYS_SD_ERROR
-}SYSINFO;  // 系统状态
 
-typedef enum{
-  LOADING_MENU,
-  MAIN_MENU,
-  TXT_MENU,
-  PIC_MENU,
-  MUSIC_MENU,
-  README_MENU,
-  TXT_DETAIL_MENU,
-  PIC_DETAIL_MENU,
-  MUSIC_DETAIL_MENU,
-  README_DETAIL_MENU
-}MENUINFO;  // 总共的菜单
-
-typedef enum{
-  KEY_ACCEPT,
-  KEY_DENY
-}KEYSTATUS;
-
-typedef enum{
-	VS1053_PLAY,
-	VS1053_STOP
-}VS1053STATUS;
 
 
 #define MENU_HEIGHT_SIZE 16
@@ -166,47 +139,7 @@ typedef enum{
 #define NAMELIST_MAX_LEN 15
 #define BUFFER_SIZE 1024
 
-void main_state_machine(uint16_t GPIO_Pin);
-void main_menu_handle(uint16_t GPIO_Pin);
-void txt_menu_handle(uint16_t GPIO_Pin);
-void pic_menu_handle(uint16_t GPIO_Pin);
-void music_menu_handle(uint16_t GPIO_Pin);
-void readme_menu_handle(uint16_t GPIO_Pin);
 
-void txt_detail_handle(uint16_t GPIO_Pin);
-void pic_detail_handle(uint16_t GPIO_Pin);
-void music_detail_handle(uint16_t GPIO_Pin);
-void readme_detail_handle(uint16_t GPIO_Pin);
-
-void music_run_stop(void);
-
-// 文本阅读的翻页控制
-void txt_next_page(void);
-void txt_prev_page(void);
-
-
-
-
-
-// 下面的SCK, MOSI 控制宏定义在软仿SPI方式才用
-//#define LCD_SCK_H         HAL_GPIO_WritePin( LCD_A5_GPIO_Port, LCD_A5_Pin, GPIO_PIN_SET) 
-//#define LCD_SCK_L         HAL_GPIO_WritePin( LCD_A5_GPIO_Port, LCD_A5_Pin, GPIO_PIN_RESET) 
-//#define LCD_MOSI_H        HAL_GPIO_WritePin( LCD_A7_GPIO_Port, LCD_A7_Pin, GPIO_PIN_SET) 
-//#define LCD_MOSI_L        HAL_GPIO_WritePin( LCD_A7_GPIO_Port, LCD_A7_Pin, GPIO_PIN_RESET) 
-/***********************************************************************************************************************************
-    ** 显示屏信号引脚请在main.h中按规范转换定义名
-       GND         电源地
-       VCC         3.3V。不要接5V, 模块不带LDO，5V很易烧屏
-    ** SCK         SPI的SCK引脚，MCU发送的用于传输的时钟信号,H/L
-    ** MOSI        SPI的MOSI引脚(别名：SDA等)，是从MCU送给屏接收的数据,H=1/L=0
-    ** RST         屏的复位引脚，EN/DISable
-    ** DC          屏的命令COM/数据DAT 选择引脚
-    ** CS          SPI的片选引脚，EN/DISable
-    ** BKL         控制背光灯-BackLight，ON/OFF（引脚已串1K电阻，且已10K上拉，高电平亮）
-       测试硬件    魔女F103RE + 魔女标配1.8寸彩屏模块(ST7735)
-       其他SPI屏，只要是ST7735，管脚顺序不一致，但含义肯定相同，用杜邦线相应转接即可用此例程。
-       个别SPI屏管脚基本对应，但后四个管脚有顺序不同，在上面引脚转换定义中修改后仍可直插使用。
-************************************************************************************************************************************/
 
 /* USER CODE END Private defines */
 

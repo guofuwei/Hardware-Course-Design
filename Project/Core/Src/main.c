@@ -35,6 +35,7 @@
 #include "malloc.h"
 #include "VS1053.h"
 #include "piclib.h"
+#include "control.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -66,20 +67,20 @@ SYSINFO SysInfo = SYS_OK;         // 系统状态
 MENUINFO MenuInfo = LOADING_MENU; // 当前在哪一个菜单
 KEYSTATUS KeyStatus = KEY_DENY;
 VS1053STATUS Vs1053Status = VS1053_PLAY;
-uint8_t SelectIndex = 0; // 当前选中的index
-bool SubMenuOk = true;   // 子菜单是否ok
-uint8_t FileNum = 0;     // 扫描出来的文件个数，防止select指示过度
+uint8_t SelectIndex = 0;           // 当前选中的index
+bool SubMenuOk = true;             // 子菜单是否ok
+uint8_t FileNum = 0;               // 扫描出来的文件个数，防止select指示过度
 char Buffer[BUFFER_SIZE] = {'\0'}; // 文本读取内容缓冲区
-int16_t BufferPos=0;
-bool IsEndTxt=false;
+int16_t BufferPos = 0;             // 文本读取内容缓冲区位置
+bool IsEndTxt = false;             // 文本是否读取完毕
 
-long VS1053_CURRENTPOS = 0;
-extern _vs10xx_obj vsset;
+long VS1053_CURRENTPOS = 0; // 当前播放的位置
+extern _vs10xx_obj vsset;   // VS1053的设置
 
 // 用于在主函数中播放
-char SongFullName[10+NAMELIST_MAX_LEN]={'\0'};
-bool IsPlay=false;
-bool IsStop=false;
+char SongFullName[10 + NAMELIST_MAX_LEN] = {'\0'};
+bool IsPlay = false;
+bool IsStop = false;
 
 /* USER CODE END PV */
 
@@ -95,9 +96,9 @@ void SystemClock_Config(void);
 /* USER CODE END 0 */
 
 /**
-  * @brief  The application entry point.
-  * @retval int
-  */
+ * @brief  The application entry point.
+ * @retval int
+ */
 int main(void)
 {
   /* USER CODE BEGIN 1 */
@@ -131,15 +132,13 @@ int main(void)
   //  HAL_NVIC_SetPriority(SysTick_IRQn,0,0U);
   //  HAL_NVIC_SetPriority(TIM,1,0U);
 
-  
   LCD_CS_DIS;      // 尽管从设备基本操作函数中有片选的处理
   W25QX_NSS_HIGH;  // 但仍要注意切换同一SPI从设备的片选CS
   LCD_Init(BLACK); // LCD驱动ST7735先初始化
   W25qx_Init();    // W25qx再初始化（内带字库）
-	//atk_mo1053_init();
-   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                   // atk_mo1053_init();
+  //  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-  	
   // 初始化屏幕标题
   set_head_string("系统初始化中", WHITE, GOODBLUE);
   // 启动定时器
@@ -156,13 +155,7 @@ int main(void)
   f_scandir_handle(res);
 
   // 初始化画图
-  piclib_init();	
-//  uint8_t i = 0;
-//  for (i = 0; i < NAMELIST_NUM; i++)
-//  {
-//    printf("%s\n", NameList[i]);
-//  }
-
+  piclib_init();
 
   printf("你好\n");
   if (res != FR_OK)
@@ -179,12 +172,6 @@ int main(void)
     KeyStatus = KEY_ACCEPT;
   }
 
-  
-//  clear_screen_all();
-//  ai_load_picfile("0:/pic/头像.jpg\0",1,1,64,64,0);
-  //song_play("0:/music/3.mp3",0);
-  
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -192,38 +179,36 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-    
 
     /* USER CODE BEGIN 3 */
-    if(IsPlay&&!IsStop)
+    if (IsPlay && !IsStop)
     {
-      song_play(SongFullName,0);
-      Vs1053Status=VS1053_PLAY;
-      IsPlay=false;
+      song_play(SongFullName, 0);
+      Vs1053Status = VS1053_PLAY;
+      IsPlay = false;
     }
-    if(IsPlay&&IsStop)
+    if (IsPlay && IsStop)
     {
-      song_play(SongFullName,VS1053_CURRENTPOS);
-      Vs1053Status=VS1053_PLAY;
-      IsPlay=false;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+      song_play(SongFullName, VS1053_CURRENTPOS);
+      Vs1053Status = VS1053_PLAY;
+      IsPlay = false;
     }
-    
   }
   /* USER CODE END 3 */
 }
 
 /**
-  * @brief System Clock Configuration
-  * @retval None
-  */
+ * @brief System Clock Configuration
+ * @retval None
+ */
 void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
 
   /** Initializes the RCC Oscillators according to the specified parameters
-  * in the RCC_OscInitTypeDef structure.
-  */
+   * in the RCC_OscInitTypeDef structure.
+   */
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
@@ -237,9 +222,8 @@ void SystemClock_Config(void)
   }
 
   /** Initializes the CPU, AHB and APB buses clocks
-  */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2;
+   */
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
@@ -262,31 +246,30 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
   if (htim->Instance == TIM7)
   {
-//    HAL_Delay(10);
-//    printf("tim7\n");
-    uint8_t res=KEY_SCAN();
-    if(res!=0 && MenuInfo==MUSIC_DETAIL_MENU)
+    uint8_t res = KEY_SCAN();
+    if (res != 0 && MenuInfo == MUSIC_DETAIL_MENU)
     {
-      if(res==1)
+      if (res == 1)
       {
         music_run_stop();
       }
-      if(res==2)
+      if (res == 2)
       {
         addvolume();
-      
       }
-      if(res==3)
+      if (res == 3)
       {
         subvolume();
       }
-      printf("res:%d",res);
-    }else if(res!=0 && MenuInfo==TXT_DETAIL_MENU){
-      if(res==2)
+      printf("res:%d", res);
+    }
+    else if (res != 0 && MenuInfo == TXT_DETAIL_MENU)
+    {
+      if (res == 2)
       {
         txt_next_page();
       }
-      else if(res==1)
+      else if (res == 1)
       {
         txt_prev_page();
       }
@@ -302,386 +285,12 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   }
 }
 
-void main_state_machine(uint16_t GPIO_Pin)
-{
-  if (SysInfo != SYS_OK)
-  {
-    set_head_string("系统已退出", YELLOW, BLACK);
-    clear_screen_content();
-    KeyStatus = KEY_DENY;
-  }
-  else
-  {
-    switch (MenuInfo)
-    {
-    case LOADING_MENU:
-      draw_main_menu();
-      break;
-    case MAIN_MENU:
-      main_menu_handle(GPIO_Pin);
-      break;
-    case TXT_MENU:
-      txt_menu_handle(GPIO_Pin);
-      break;
-    case PIC_MENU:
-      pic_menu_handle(GPIO_Pin);
-      break;
-    case MUSIC_MENU:
-      music_menu_handle(GPIO_Pin);
-      break;
-    case README_MENU:
-      readme_menu_handle(GPIO_Pin);
-      break;
-    case TXT_DETAIL_MENU:
-      txt_detail_handle(GPIO_Pin);
-      break;
-    case PIC_DETAIL_MENU:
-      pic_detail_handle(GPIO_Pin);
-      break;
-    case MUSIC_DETAIL_MENU:
-      printf("music_detail_menu\n");
-      music_detail_handle(GPIO_Pin);
-      break;
-    case README_DETAIL_MENU:
-      readme_detail_handle(GPIO_Pin);
-      break;
-    }
-  }
-}
-
-void main_menu_handle(uint16_t GPIO_Pin)
-{
-  // 向下翻按钮
-  if (GPIO_Pin == KEY1_Pin)
-  {
-    clear_select();
-    SelectIndex = SelectIndex + 1;
-    if (SelectIndex >= 4)
-    {
-      SelectIndex = 0;
-    }
-    draw_select();
-  }
-  // 确定按钮
-  else if (GPIO_Pin == KEY2_Pin)
-  {
-    switch (SelectIndex)
-    {
-    case 0:
-      draw_txt_menu();
-      break;
-    case 1:
-      draw_pic_menu();
-      break;
-    case 2:
-      draw_music_menu();
-      break;
-    case 3:
-      draw_readme_menu();
-      break;
-    default:
-      LED_RED_ON;
-      HAL_Delay(100);
-      LED_RED_OFF;
-    }
-  }
-  // 返回或者取消按钮（在主菜单无用）
-  else if (GPIO_Pin == KEY3_Pin)
-  {
-    LED_BLUE_ON;
-    HAL_Delay(100);
-    LED_BLUE_OFF;
-  }
-  else
-  {
-    LED_RED_ON;
-    HAL_Delay(100);
-    LED_RED_OFF;
-  }
-}
-
-void txt_menu_handle(uint16_t GPIO_Pin)
-{
-  if (GPIO_Pin == KEY1_Pin && SubMenuOk == true)
-  {
-    clear_select();
-    SelectIndex = SelectIndex + 1;
-    if (SelectIndex >= FileNum)
-    {
-      SelectIndex = 0;
-    }
-    draw_select();
-  }
-  else if (GPIO_Pin == KEY2_Pin && SubMenuOk == true)
-  {
-    //    printf("show txt content");
-    show_txt_content();
-  }
-  else if (GPIO_Pin == KEY3_Pin)
-  {
-    draw_main_menu();
-  }
-  else
-  {
-    LED_RED_ON;
-    HAL_Delay(100);
-    LED_RED_OFF;
-  }
-}
-
-void pic_menu_handle(uint16_t GPIO_Pin)
-{
-  printf("pic_menu_handle\n");
-  if (GPIO_Pin == KEY1_Pin && SubMenuOk == true)
-  {
-    clear_select();
-    SelectIndex = SelectIndex + 1;
-    if (SelectIndex >= FileNum)
-    {
-      SelectIndex = 0;
-    }
-    draw_select();
-  }
-  else if (GPIO_Pin == KEY2_Pin && SubMenuOk == true)
-  {
-    show_pic_content();
-  }
-  else if (GPIO_Pin == KEY3_Pin)
-  {
-    draw_main_menu();
-  }
-  else
-  {
-    LED_RED_ON;
-    HAL_Delay(100);
-    LED_RED_OFF;
-  }
-}
-
-void music_menu_handle(uint16_t GPIO_Pin)
-{
-  if (GPIO_Pin == KEY1_Pin && SubMenuOk == true)
-  {
-    clear_select();
-    SelectIndex = SelectIndex + 1;
-    if (SelectIndex >= FileNum)
-    {
-      SelectIndex = 0;
-    }
-    draw_select();
-  }
-  else if (GPIO_Pin == KEY2_Pin && SubMenuOk == true)
-  {
-    play_song_content();
-  }
-  else if (GPIO_Pin == KEY3_Pin)
-  {
-    draw_main_menu();
-  }
-  else
-  {
-    LED_RED_ON;
-    HAL_Delay(100);
-    LED_RED_OFF;
-  }
-}
-
-
-void txt_detail_handle(uint16_t GPIO_Pin)
-{
-  if (GPIO_Pin == KEY1_Pin && SubMenuOk == true)
-  {
-  }
-  else if (GPIO_Pin == KEY2_Pin && SubMenuOk == true)
-  {
-  }
-  else if (GPIO_Pin == KEY3_Pin)
-  {
-    draw_txt_menu();
-  }
-  else
-  {
-    LED_RED_ON;
-    HAL_Delay(100);
-    LED_RED_OFF;
-  }
-}
-
-void pic_detail_handle(uint16_t GPIO_Pin)
-{
-  if (GPIO_Pin == KEY1_Pin && SubMenuOk == true)
-  {
-  }
-  else if (GPIO_Pin == KEY2_Pin && SubMenuOk == true)
-  {
-  }
-  else if (GPIO_Pin == KEY3_Pin)
-  {
-    draw_pic_menu();
-  }
-  else
-  {
-    LED_RED_ON;
-    HAL_Delay(100);
-    LED_RED_OFF;
-  }
-}
-
-void music_detail_handle(uint16_t GPIO_Pin)
-{
-  if (GPIO_Pin == KEY1_Pin && SubMenuOk == true)
-  {
-  }
-  else if (GPIO_Pin == KEY2_Pin && SubMenuOk == true)
-                                                                {
-  }
-  else if (GPIO_Pin == KEY3_Pin)
-  {
-//    VS10XX_XCS(1);
-//    VS10XX_XDCS(1);
-    draw_music_menu();
-		HAL_Delay(100);
-		Vs1053Status=VS1053_STOP;
-		IsPlay=false;
-    IsStop=false;
-  }
-  else
-  {
-    LED_RED_ON;
-    HAL_Delay(100);
-    LED_RED_OFF;
-  }
-}
-
-void music_run_stop()
-{
-  if(!IsStop)
-  {
-    IsStop=1;
-  Vs1053Status = VS1053_STOP;
-  IsPlay=false;
-  
-  }
-  else
-  {
-    if(IsPlay)
-    {      
-      IsPlay=false;
-      Vs1053Status=VS1053_STOP;        
-    }
-    else
-    {
-      IsPlay=true;
-    }
-  }
-}
-
-void readme_menu_handle(uint16_t GPIO_Pin)
-{
-  // 向下翻按钮
-  if (GPIO_Pin == KEY1_Pin)
-  {
-    clear_select();
-    SelectIndex = SelectIndex + 1;
-    if (SelectIndex >= 3)
-    {
-      SelectIndex = 0;
-    }
-    draw_select();
-  }
-  // 确定按钮
-  else if (GPIO_Pin == KEY2_Pin)
-  {
-    show_readme_content();
-  }
-  // 返回或者取消按钮（在主菜单无用）
-  else if (GPIO_Pin == KEY3_Pin)
-  {
-    draw_main_menu();
-  }
-  else
-  {
-    LED_RED_ON;
-    HAL_Delay(100);
-    LED_RED_OFF;
-  }
-}
-
-void readme_detail_handle(uint16_t GPIO_Pin)
-{
-  if (GPIO_Pin == KEY1_Pin && SubMenuOk == true)
-  {
-  }
-  else if (GPIO_Pin == KEY2_Pin && SubMenuOk == true)
-  {
-  }
-  else if (GPIO_Pin == KEY3_Pin)
-  {
-    draw_readme_menu();
-  }
-  else
-  {
-    LED_RED_ON;
-    HAL_Delay(100);
-    LED_RED_OFF;
-  }
-}
-
-
-// 文本翻页函数
-void txt_next_page(void)
-{
-  BufferPos=BufferPos+MAX_DISPLAY_TXT_LENGTH;
-  
-  if(BufferPos>=BUFFER_SIZE){
-    char tmp_str[100]={'\0'};
-    sprintf(tmp_str,"已超出缓冲区，当前缓冲区为%dB",BUFFER_SIZE);
-    clear_screen_content();
-    display_string(tmp_str,16,WHITE,BLACK);
-    return;
-  }
-  if(Buffer[BufferPos]=='\0')
-  {
-    if(IsEndTxt==false)
-    {
-       IsEndTxt=true;
-       clear_screen_content();
-       display_string("已到达文件末尾",16,WHITE,BLACK);
-    }
-    else
-    {
-      BufferPos=BufferPos-MAX_DISPLAY_TXT_LENGTH;
-    }
-    return;
-  }
-  char tmp_buffer[MAX_DISPLAY_TXT_LENGTH+1] = {'\0'}; // 文本读取内容缓冲区
-  strncpy(tmp_buffer,Buffer+BufferPos,MAX_DISPLAY_TXT_LENGTH);
-  clear_screen_content();
-  display_string(tmp_buffer,16,WHITE,BLACK); 
-}
-
-void txt_prev_page(void)
-{
-  BufferPos=BufferPos-MAX_DISPLAY_TXT_LENGTH;
-  
-  if(BufferPos<0){
-    BufferPos=BufferPos+MAX_DISPLAY_TXT_LENGTH;
-    return;
-  }
-  char tmp_buffer[MAX_DISPLAY_TXT_LENGTH+1] = {'\0'}; // 文本读取内容缓冲区
-  strncpy(tmp_buffer,Buffer+BufferPos,MAX_DISPLAY_TXT_LENGTH);
-  clear_screen_content();
-  display_string(tmp_buffer,16,WHITE,BLACK); 
-}
-
-
-
 /* USER CODE END 4 */
 
 /**
-  * @brief  This function is executed in case of error occurrence.
-  * @retval None
-  */
+ * @brief  This function is executed in case of error occurrence.
+ * @retval None
+ */
 void Error_Handler(void)
 {
   /* USER CODE BEGIN Error_Handler_Debug */
@@ -693,14 +302,14 @@ void Error_Handler(void)
   /* USER CODE END Error_Handler_Debug */
 }
 
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
-  * @brief  Reports the name of the source file and the source line number
-  *         where the assert_param error has occurred.
-  * @param  file: pointer to the source file name
-  * @param  line: assert_param error line source number
-  * @retval None
-  */
+ * @brief  Reports the name of the source file and the source line number
+ *         where the assert_param error has occurred.
+ * @param  file: pointer to the source file name
+ * @param  line: assert_param error line source number
+ * @retval None
+ */
 void assert_failed(uint8_t *file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
