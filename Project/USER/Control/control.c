@@ -304,7 +304,7 @@ void readme_menu_handle(uint16_t gpio_pin)
   {
     clear_select();
     SelectIndex = SelectIndex + 1;
-    if (SelectIndex >= 3)
+    if (SelectIndex >= 4)
     {
       SelectIndex = 0;
     }

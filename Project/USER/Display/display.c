@@ -226,9 +226,10 @@ void draw_readme_menu(void)
   clear_screen_content();
 
   display_string("请选择功能:", MENU_HEIGHT_SIZE, WHITE, BLACK);
-  display_string_custom("查看按键说明", MENU_HEIGHT_SIZE, WHITE, BLACK, 5, Cursor.y_cur);
-  display_string_custom("查看SD卡说明", MENU_HEIGHT_SIZE, WHITE, BLACK, 5, Cursor.y_cur);
-  display_string_custom("查看音乐播放说明", MENU_HEIGHT_SIZE, WHITE, BLACK, 5, Cursor.y_cur);
+  display_string_custom("按键说明", MENU_HEIGHT_SIZE, WHITE, BLACK, 5, Cursor.y_cur);
+  display_string_custom("SD卡说明", MENU_HEIGHT_SIZE, WHITE, BLACK, 5, Cursor.y_cur);
+  display_string_custom("音乐播放说明", MENU_HEIGHT_SIZE, WHITE, BLACK, 5, Cursor.y_cur);
+  display_string_custom("文本查看说明", MENU_HEIGHT_SIZE, WHITE, BLACK, 5, Cursor.y_cur);
   draw_select();
 }
 
@@ -334,6 +335,11 @@ void show_readme_content(void)
     set_head_string("音乐播放说明", WHITE, GOODBLUE);
     clear_screen_content();
     display_string("【矩阵键盘】1键:暂停/播放，2键:增大音量，3键:减少音量", 16, WHITE, BLACK);
+    break;
+  case 3:
+    set_head_string("文本查看说明", WHITE, GOODBLUE);
+    clear_screen_content();
+    display_string("【矩阵键盘】1键:向前翻页，2键:向后翻页", 16, WHITE, BLACK);
     break;
   default:
     set_head_string("非法选项", WHITE, GOODBLUE);
