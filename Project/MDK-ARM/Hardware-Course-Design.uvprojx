@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/STM32F1xx_HAL_Driver/Inc;../Middlewares/Third_Party/FatFs/src;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../USER/Display;../USER/Sdcard;../USER/VS1053;../USER/W25qxx;../USER/KeyBoard;../USER/Picture;..\USER\Malloc</IncludePath>
+              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/STM32F1xx_HAL_Driver/Inc;../Middlewares/Third_Party/FatFs/src;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../USER/Display;../USER/Sdcard;../USER/VS1053;../USER/W25qxx;../USER/KeyBoard;../USER/Picture;..\USER\Malloc;..\USER\Control</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -742,6 +742,21 @@
               <FileName>malloc.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\USER\Malloc\malloc.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Application/User/Control</GroupName>
+          <Files>
+            <File>
+              <FileName>control.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Control\control.c</FilePath>
+            </File>
+            <File>
+              <FileName>control.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\Control\control.h</FilePath>
             </File>
           </Files>
         </Group>

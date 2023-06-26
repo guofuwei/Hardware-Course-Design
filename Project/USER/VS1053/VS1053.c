@@ -2,7 +2,10 @@
 #include "spi.h"
 #include "vs1053.h"
 #include "usart.h"
-//#include "delay.h"
+
+extern _vs10xx_obj vsset;   /* VS10XX设置 */
+extern long VS1053_CURRENTPOS;
+extern VS1053STATUS  Vs1053Status;
 
 
 /* ATK_MO1053 默认设置参数 */
