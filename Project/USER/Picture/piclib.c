@@ -2,21 +2,6 @@
 //#include "lcd.h"
 #include "lcd_st7735.h"
 #include "fatfs.h"
-//////////////////////////////////////////////////////////////////////////////////	 
-//本程序只供学习使用，未经作者许可，不得用于其它任何用途
-//ALIENTEK STM32F407开发板
-//图片解码 驱动代码	   
-//正点原子@ALIENTEK
-//技术论坛:www.openedv.com
-//创建日期:2014/5/15
-//版本：V1.0
-//版权所有，盗版必究。
-//Copyright(C) 广州市星翼电子科技有限公司 2014-2024
-//All rights reserved
-//********************************************************************************
-//升级说明
-//无
-//////////////////////////////////////////////////////////////////////////////////
 
 extern struct _LCD              // 结构体：用于保存信息、状态
 {     
@@ -53,7 +38,7 @@ void piclib_init(void)
 	pic_phy.draw_point=drawPoint;	//画点函数实现
 	pic_phy.fill=LCD_Fill;					//填充函数实现
 	pic_phy.draw_hline=piclib_draw_hline;  	//画线函数实现
-	pic_phy.fillcolor=piclib_fill_color;  	//颜色填充函数实现 
+	pic_phy.fillcolor=NULL;  	//颜色填充函数实现 // TO DO !!!!!!!!!!!!!!!!!
 
 	picinfo.lcdwidth=xLCD.width;	//得到LCD的宽度像素
 	picinfo.lcdheight=xLCD.height;//得到LCD的高度像素
@@ -153,7 +138,7 @@ uint8_t ai_load_picfile(char *filename,uint16_t x,uint16_t y,uint16_t width,uint
 	picinfo.S_YOFF=y;
 	picinfo.S_XOFF=x;
   
-  printf("4444");
+//  printf("4444");
 	//文件名传递		 
   
   
@@ -172,10 +157,10 @@ uint8_t ai_load_picfile(char *filename,uint16_t x,uint16_t y,uint16_t width,uint
       printf("jpg图片\n");
 			res=jpg_decode((const uint8_t*)filename,fast);				//解码JPG/JPEG	  	  
 			break;
-//		case T_GIF:
-//      printf("gif图片\n");
-////		res=gif_decode(filename,x,y,width,height);	//解码gif  	  
-//			break;
+		case T_GIF:
+      printf("gif图片\n");
+      res=gif_decode((const uint8_t*)filename,x,y,width,height);	//解码gif  	  
+			break;
 		default:
       printf("error 图片\n");
 	 		res=PIC_FORMAT_ERR;  						//非图片格式!!!  

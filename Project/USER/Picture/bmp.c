@@ -1,21 +1,6 @@
 #include "piclib.h"
 #include "bmp.h"
 #include "string.h"
-//////////////////////////////////////////////////////////////////////////////////	 
-//本程序只供学习使用，未经作者许可，不得用于其它任何用途
-//ALIENTEK STM32F407开发板
-//图片解码 驱动代码-bmp解码部分	   
-//正点原子@ALIENTEK
-//技术论坛:www.openedv.com
-//创建日期:2014/5/15
-//版本：V1.0
-//版权所有，盗版必究。
-//Copyright(C) 广州市星翼电子科技有限公司 2014-2024
-//All rights reserved
-//********************************************************************************
-//升级说明 
-//无
-//////////////////////////////////////////////////////////////////////////////////
 
 
 extern struct _LCD              // 结构体：用于保存信息、状态
@@ -40,9 +25,9 @@ uint8_t bmpreadbuf[BMP_DBUF_SIZE];
 uint8_t stdbmp_decode(char *filename) 
 {
 	FIL* f_bmp;
-    uint16_t br;
+  uint16_t br;
 
-    uint16_t count;		    	   
+  uint16_t count;		    	   
 	uint8_t  rgb ,color_byte;
 	uint16_t x ,y,color;	  
 	uint16_t countpix=0;//记录像素 	 

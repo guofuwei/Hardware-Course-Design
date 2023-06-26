@@ -11,6 +11,7 @@ extern "C" {
 #define SCREEN_HEAD_HEIGHT 16 // 显示标题的高度
 //#define HEAD_FCOLOR BLACK
 //#define HEAD_BCOLOR CYAN
+#define PIC_SIZE 128 // 默认图片的长宽
 
 typedef struct{
 	uint16_t x_cur;

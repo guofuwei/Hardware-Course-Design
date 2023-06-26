@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/STM32F1xx_HAL_Driver/Inc;../Middlewares/Third_Party/FatFs/src;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../USER/Display;../USER/Sdcard;../USER/VS1053;../USER/W25qxx;../USER/KeyBoard;../USER/Picture</IncludePath>
+              <IncludePath>../Core/Inc;../FATFS/Target;../FATFS/App;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/STM32F1xx_HAL_Driver/Inc;../Middlewares/Third_Party/FatFs/src;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../USER/Display;../USER/Sdcard;../USER/VS1053;../USER/W25qxx;../USER/KeyBoard;../USER/Picture;..\USER\Malloc</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -634,16 +634,6 @@
           <GroupName>Application/User/VS1053</GroupName>
           <Files>
             <File>
-              <FileName>delay.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\VS1053\delay.c</FilePath>
-            </File>
-            <File>
-              <FileName>malloc.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\VS1053\malloc.c</FilePath>
-            </File>
-            <File>
               <FileName>sys.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\VS1053\sys.c</FilePath>
@@ -704,19 +694,14 @@
               <FilePath>..\USER\Picture\bmp.c</FilePath>
             </File>
             <File>
-              <FileName>piclib.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\Picture\piclib.c</FilePath>
-            </File>
-            <File>
               <FileName>bmp.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\USER\Picture\bmp.h</FilePath>
             </File>
             <File>
-              <FileName>piclib.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\USER\Picture\piclib.h</FilePath>
+              <FileName>tjpgd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Picture\tjpgd.c</FilePath>
             </File>
             <File>
               <FileName>tjpgd.h</FileName>
@@ -724,14 +709,44 @@
               <FilePath>..\USER\Picture\tjpgd.h</FilePath>
             </File>
             <File>
+              <FileName>piclib.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Picture\piclib.c</FilePath>
+            </File>
+            <File>
+              <FileName>piclib.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\Picture\piclib.h</FilePath>
+            </File>
+            <File>
               <FileName>integer.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\USER\Picture\integer.h</FilePath>
             </File>
             <File>
-              <FileName>tjpgd.c</FileName>
+              <FileName>gif.c</FileName>
               <FileType>1</FileType>
-              <FilePath>..\USER\Picture\tjpgd.c</FilePath>
+              <FilePath>..\USER\Picture\gif.c</FilePath>
+            </File>
+            <File>
+              <FileName>gif.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\Picture\gif.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Application/User/Malloc</GroupName>
+          <Files>
+            <File>
+              <FileName>malloc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\USER\Malloc\malloc.c</FilePath>
+            </File>
+            <File>
+              <FileName>malloc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\USER\Malloc\malloc.h</FilePath>
             </File>
           </Files>
         </Group>
