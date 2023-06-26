@@ -12,6 +12,7 @@ extern "C" {
 //#define HEAD_FCOLOR BLACK
 //#define HEAD_BCOLOR CYAN
 #define PIC_SIZE 128 // Ä¬ÈÏÍ¼Æ¬µÄ³¤¿í
+#define MAX_DISPLAY_TXT_LENGTH 136
 
 typedef struct{
 	uint16_t x_cur;

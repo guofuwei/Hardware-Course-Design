@@ -1,6 +1,6 @@
 #ifndef __GIF_H__
 #define __GIF_H__
-#include "sys.h"    
+//#include "sys.h"    
 #include "ff.h"
 
 

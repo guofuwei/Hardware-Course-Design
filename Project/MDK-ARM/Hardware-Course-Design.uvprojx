@@ -634,11 +634,6 @@
           <GroupName>Application/User/VS1053</GroupName>
           <Files>
             <File>
-              <FileName>sys.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\USER\VS1053\sys.c</FilePath>
-            </File>
-            <File>
               <FileName>VS1053.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\USER\VS1053\VS1053.c</FilePath>

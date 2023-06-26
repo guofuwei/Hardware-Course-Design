@@ -29,7 +29,7 @@ extern "C" {
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
-#include "sys.h"
+//#include "sys.h"
 /* USER CODE END Includes */
 
 extern SPI_HandleTypeDef hspi1;

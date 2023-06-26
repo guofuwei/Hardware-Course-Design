@@ -1,6 +1,6 @@
 #ifndef __PICLIB_H
 #define __PICLIB_H	  		  
-#include "sys.h" 
+//#include "sys.h" 
 #include "lcd_st7735.h"
 #include "malloc.h"
 #include "ff.h"

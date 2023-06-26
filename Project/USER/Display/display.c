@@ -14,6 +14,9 @@ extern char NameList[NAMELIST_NUM][NAMELIST_MAX_LEN];
 extern uint8_t FileNum;
 extern KEYSTATUS KeyStatus;
 extern char Buffer[BUFFER_SIZE];
+extern int16_t BufferPos;
+extern bool IsEndTxt;
+
 extern char SongFullName[10+NAMELIST_MAX_LEN]; // 用于音乐播放
 extern bool IsPlay;
 
@@ -245,19 +248,31 @@ void show_txt_content(void)
   // 打开文件并读取
   UINT has_read=0;
   FIL fp;
+  // 清空Buffer和BufferPos,IsEndTxt
   memset(Buffer,'\0',sizeof(Buffer));
+  BufferPos=0;
+  IsEndTxt=false;
+  // 打开并读取文件
   FRESULT res=f_open(&fp,full_name,FA_READ);
 //  printf("FRESULT:%d",res);
 	f_read(&fp,Buffer,1024,&has_read);
 	f_close(&fp);
   
-  // 显示读取到的内容
+  // 打印提示信息
   printf("hasread:%d\n",has_read);
   printf("%s\nd",Buffer);
-
+  
+  // 显示读取到的内容
   set_head_string(file_name, WHITE, GOODBLUE);
   clear_screen_content();
-  display_string(Buffer,16,WHITE,BLACK);  
+  if(has_read<=MAX_DISPLAY_TXT_LENGTH)
+  {
+    display_string(Buffer,16,WHITE,BLACK);  
+  }else{
+    char tmp_buffer[MAX_DISPLAY_TXT_LENGTH+1] = {'\0'}; // 文本读取内容缓冲区
+    strncpy(tmp_buffer,Buffer+BufferPos,MAX_DISPLAY_TXT_LENGTH);
+    display_string(tmp_buffer,16,WHITE,BLACK); 
+  }    
 }
 
 void show_pic_content(void)

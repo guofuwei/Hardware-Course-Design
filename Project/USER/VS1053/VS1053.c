@@ -726,7 +726,7 @@ long song_play(char *path,long startpos)
       atk_mo1053_reset_decode_time(); /* 复位解码时间 */
       atk_mo1053_set_volume(vsset.mvol);	
       VS1053_CURRENTPOS=0;
-       Vs1053Status=VS1053_PLAY;
+      Vs1053Status=VS1053_PLAY;
   }			
                        
   res = f_open(fmp3,path, FA_READ);              /* 打开文件 */
@@ -756,7 +756,6 @@ long song_play(char *path,long startpos)
              
           }
           // audio_msg_show(fmp3->obj.objsize);              /* 显示信息 */
-            
         } while (i < 4096);   
         /* 循环发送4096个字节 */
         switch(Vs1053Status)
@@ -786,8 +785,8 @@ long song_play(char *path,long startpos)
     }
     myfree(SRAMIN,databuf);
     myfree(SRAMIN,fmp3);
-//    VS10XX_XCS(1);
-//    VS10XX_XDCS(1);
+//  VS10XX_XCS(1);
+//  VS10XX_XDCS(1);
 		return 0;
 }
 
