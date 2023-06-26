@@ -69,13 +69,15 @@ VS1053STATUS Vs1053Status = VS1053_PLAY;
 uint8_t SelectIndex = 0; // 当前选中的index
 bool SubMenuOk = true;   // 子菜单是否ok
 uint8_t FileNum = 0;     // 扫描出来的文件个数，防止select指示过度
-char Buffer[BUFFER_SIZE] = "0";
+char Buffer[BUFFER_SIZE] = {'\0'}; // 文本读取内容缓冲区
+int16_t BufferPos=0;
+bool IsEndTxt=false;
 
 long VS1053_CURRENTPOS = 0;
 extern _vs10xx_obj vsset;
 
 // 用于在主函数中播放
-char SongFullName[10+NAMELIST_MAX_LEN]="\0";
+char SongFullName[10+NAMELIST_MAX_LEN]={'\0'};
 bool IsPlay=false;
 bool IsStop=false;
 
@@ -279,6 +281,15 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
         subvolume();
       }
       printf("res:%d",res);
+    }else if(res!=0 && MenuInfo==TXT_DETAIL_MENU){
+      if(res==2)
+      {
+        txt_next_page();
+      }
+      else if(res==1)
+      {
+        txt_prev_page();
+      }
     }
   }
 }
@@ -615,6 +626,56 @@ void readme_detail_handle(uint16_t GPIO_Pin)
     LED_RED_OFF;
   }
 }
+
+
+// 文本翻页函数
+void txt_next_page(void)
+{
+  BufferPos=BufferPos+MAX_DISPLAY_TXT_LENGTH;
+  
+  if(BufferPos>=BUFFER_SIZE){
+    char tmp_str[100]={'\0'};
+    sprintf(tmp_str,"已超出缓冲区，当前缓冲区为%dB",BUFFER_SIZE);
+    clear_screen_content();
+    display_string(tmp_str,16,WHITE,BLACK);
+    return;
+  }
+  if(Buffer[BufferPos]=='\0')
+  {
+    if(IsEndTxt==false)
+    {
+       IsEndTxt=true;
+       clear_screen_content();
+       display_string("已到达文件末尾",16,WHITE,BLACK);
+    }
+    else
+    {
+      BufferPos=BufferPos-MAX_DISPLAY_TXT_LENGTH;
+    }
+    return;
+  }
+  char tmp_buffer[MAX_DISPLAY_TXT_LENGTH+1] = {'\0'}; // 文本读取内容缓冲区
+  strncpy(tmp_buffer,Buffer+BufferPos,MAX_DISPLAY_TXT_LENGTH);
+  clear_screen_content();
+  display_string(tmp_buffer,16,WHITE,BLACK); 
+}
+
+void txt_prev_page(void)
+{
+  BufferPos=BufferPos-MAX_DISPLAY_TXT_LENGTH;
+  
+  if(BufferPos<0){
+    BufferPos=BufferPos+MAX_DISPLAY_TXT_LENGTH;
+    return;
+  }
+  char tmp_buffer[MAX_DISPLAY_TXT_LENGTH+1] = {'\0'}; // 文本读取内容缓冲区
+  strncpy(tmp_buffer,Buffer+BufferPos,MAX_DISPLAY_TXT_LENGTH);
+  clear_screen_content();
+  display_string(tmp_buffer,16,WHITE,BLACK); 
+}
+
+
+
 /* USER CODE END 4 */
 
 /**

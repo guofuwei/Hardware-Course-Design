@@ -180,6 +180,10 @@ void readme_detail_handle(uint16_t GPIO_Pin);
 
 void music_run_stop(void);
 
+// 文本阅读的翻页控制
+void txt_next_page(void);
+void txt_prev_page(void);
+
 
 
 
