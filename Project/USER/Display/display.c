@@ -274,7 +274,7 @@ void show_pic_content(void)
   set_head_string(file_name, WHITE, GOODBLUE);
   clear_screen_content();
   printf("pic 1111\n");
-  uint8_t res=ai_load_picfile(full_name,1,SCREEN_HEAD_HEIGHT+1,64,64,0);
+  uint8_t res=ai_load_picfile(full_name,1,SCREEN_HEAD_HEIGHT+1,PIC_SIZE,PIC_SIZE,0);
   if(res==PIC_FORMAT_ERR)
   {
     display_string("图片格式不支持",16,WHITE,BLACK);

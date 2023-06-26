@@ -1082,6 +1082,7 @@ uint32_t jpeg_out_func_point(JDEC* jd,void* rgbbuf,JRECT* rect)
 	}
     return 0;    //返回0,使得解码工作继续执行 
 } 
+
 //解码jpeg/jpg文件s
 //filename:jpeg/jpg路径+文件名
 //fast:使能小图片(图片尺寸小于等于液晶分辨率)快速解码,0,不使能;1,使能.

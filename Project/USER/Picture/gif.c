@@ -1,24 +1,7 @@
 #include "piclib.h"
 #include "gif.h"	 
 #include "ff.h"	
-#include "delay.h"	    
-//////////////////////////////////////////////////////////////////////////////////	 
-//本程序只供学习使用，未经作者许可，不得用于其它任何用途
-//ALIENTEK STM32F407开发板
-//图片解码 驱动代码-gif解码部分
-//正点原子@ALIENTEK
-//技术论坛:www.openedv.com
-//创建日期:2014/5/15
-//版本：V1.0
-//版权所有，盗版必究。
-//Copyright(C) 广州市星翼电子科技有限公司 2014-2024
-//All rights reserved
-//********************************************************************************
-//升级说明 
-//无
-//////////////////////////////////////////////////////////////////////////////////
-					    
-
+//#include "delay.h"	    
 const uint16_t _aMaskTbl[16] =
 {
 	0x0000, 0x0001, 0x0003, 0x0007,
@@ -44,7 +27,7 @@ LZW_INFO tlzw;			//lzw
 uint8_t gif_check_head(FIL *file)
 {
 	uint8_t gifversion[6];
-	u32 readed;
+	uint32_t readed;
 	uint8_t res;
 	res=f_read(file,gifversion,6,(UINT*)&readed);
 	if(res)return 1;	   
@@ -74,7 +57,7 @@ uint8_t gif_readcolortbl(FIL *file,gif89a * gif,uint16_t num)
 	uint8_t rgb[3];
 	uint16_t t;
 	uint8_t res;
-	u32 readed;
+	uint32_t readed;
 	for(t=0;t<num;t++)
 	{
 		res=f_read(file,rgb,3,(UINT*)&readed);
@@ -89,7 +72,7 @@ uint8_t gif_readcolortbl(FIL *file,gif89a * gif,uint16_t num)
 //返回值:0,OK;其他,失败;
 uint8_t gif_getinfo(FIL *file,gif89a * gif)
 {
-	u32 readed;	 
+	uint32_t readed;	 
 	uint8_t res;   
 	res=f_read(file,(uint8_t*)&gif->gifLSD,7,(UINT*)&readed);
 	if(res)return 1;
@@ -139,8 +122,8 @@ void gif_initlzw(gif89a* gif,uint8_t codesize)
 uint16_t gif_getdatablock(FIL *gfile,uint8_t *buf,uint16_t maxnum) 
 {
 	uint8_t cnt;
-	u32 readed;
-	u32 fpos;
+	uint32_t readed;
+	uint32_t fpos;
 	f_read(gfile,&cnt,1,(UINT*)&readed);//得到LZW长度			 
 	if(cnt) 
 	{
@@ -170,7 +153,7 @@ uint16_t gif_getdatablock(FIL *gfile,uint8_t *buf,uint16_t maxnum)
 uint8_t gif_readextension(FIL *gfile,gif89a* gif, int *pTransIndex,uint8_t *pDisposal)
 {
 	uint8_t temp;
-	u32 readed;	 
+	uint32_t readed;	 
 	uint8_t buf[4];  
 	f_read(gfile,&temp,1,(UINT*)&readed);//得到长度		 
 	switch(temp)
@@ -303,7 +286,7 @@ int gif_getnextbyte(FIL *gfile,gif89a* gif)
 //                 of the image are rendered with the background color.
 uint8_t gif_dispimage(FIL *gfile,gif89a* gif,uint16_t x0,uint16_t y0,int Transparency, uint8_t Disposal) 
 {
-	u32 readed;	   
+	uint32_t readed;	   
    	uint8_t lzwlen;
 	int Index,OldIndex,XPos,YPos,YCnt,Pass,Interlace,XEnd;
 	int Width,Height,Cnt,ColorIndex;
@@ -427,7 +410,7 @@ void gif_clear2bkcolor(uint16_t x,uint16_t y,gif89a* gif,ImageScreenDescriptor p
 //x0,y0:开始显示的坐标
 uint8_t gif_drawimage(FIL *gfile,gif89a* gif,uint16_t x0,uint16_t y0)
 {		  
-	u32 readed;
+	uint32_t readed;
 	uint8_t res,temp;    
 	uint16_t numcolors;
 	ImageScreenDescriptor previmg;
@@ -530,7 +513,7 @@ uint8_t gif_decode(const uint8_t *filename,uint16_t x,uint16_t y,uint16_t width,
 				if(mygif89a->gifISD.flag&0x80)gif_recovergctbl(mygif89a);//恢复全局颜色表
 				if(mygif89a->delay)dtime=mygif89a->delay;
 				else dtime=10;//默认延时
-				while(dtime--&&gifdecoding)delay_ms(10);//延迟
+				while(dtime--&&gifdecoding)HAL_Delay(10);//延迟
 				if(res==2)
 				{
 					res=0;
