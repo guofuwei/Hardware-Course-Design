@@ -6,7 +6,7 @@
 /*---------------------------------------------------------------------------*/
 /* System Configurations */
 //////////////////////////////////////////”√ªß≈‰÷√«¯//////////////////////////////////
-
+#include "stm32f1xx_hal.h"
 
 #define	JD_SZBUF			1024	/* Size of stream input buffer */
 #define JD_FORMAT			1		/* Output pixel format 0:RGB888 (3 BYTE/pix), 1:RGB565 (1 WORD/pix) */
@@ -25,7 +25,7 @@ extern "C" {
 #endif
 
 #include "integer.h"
-#include "sys.h"
+//#include "sys.h"
 
 	
 	

@@ -1,6 +1,7 @@
 #ifndef __BMP_H__
 #define __BMP_H__
-#include "sys.h"
+//#include "sys.h"
+#include "stm32f1xx_hal.h"
 					    
 //////////////////////////////////////////用户配置区///////////////////////////////
 #define BMP_USE_MALLOC		1 		//定义是否使用malloc,这里我们选择使用malloc

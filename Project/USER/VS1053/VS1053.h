@@ -2,7 +2,7 @@
 #ifndef __VS10XX_H
 #define __VS10XX_H
 
-#include "sys.h"
+//#include "sys.h"
 //#include "spi_sdcard.c"
 #include "malloc.h"
 #include "fatfs.h"

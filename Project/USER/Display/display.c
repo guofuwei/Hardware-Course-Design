@@ -251,10 +251,11 @@ void show_txt_content(void)
 	f_read(&fp,Buffer,1024,&has_read);
 	f_close(&fp);
   
-  // 显示读取到的内容
+  // 打印提示信息
   printf("hasread:%d\n",has_read);
   printf("%s\nd",Buffer);
-
+  
+  // 显示读取到的内容
   set_head_string(file_name, WHITE, GOODBLUE);
   clear_screen_content();
   display_string(Buffer,16,WHITE,BLACK);  
