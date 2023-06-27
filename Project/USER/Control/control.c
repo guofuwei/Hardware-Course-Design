@@ -282,6 +282,8 @@ void music_run_stop()
     IsStop = 1;
     Vs1053Status = VS1053_STOP;
     IsPlay = false;
+    clear_current_line(MENU_HEIGHT_SIZE);
+    display_string("已暂停", 16, WHITE, BLACK);
   }
   else
   {
@@ -289,10 +291,14 @@ void music_run_stop()
     {
       IsPlay = false;
       Vs1053Status = VS1053_STOP;
+      clear_current_line(MENU_HEIGHT_SIZE);
+      display_string("已暂停", 16, WHITE, BLACK);
     }
     else
     {
       IsPlay = true;
+      clear_current_line(MENU_HEIGHT_SIZE);
+      display_string("正在播放音乐...", 16, WHITE, BLACK);
     }
   }
 }

@@ -83,6 +83,12 @@ void clear_screen_head(uint16_t bColor)
   LCD_Fill(1, 1, LCD_WIDTH, SCREEN_HEAD_HEIGHT, bColor);
 }
 
+void clear_current_line(uint8_t size)
+{
+  Cursor.y_cur -= size;
+  LCD_Fill(1, Cursor.y_cur, LCD_WIDTH, Cursor.y_cur+size, BLACK);
+}
+
 void clear_screen_content(void)
 {
   LCD_Fill(1, 1 + SCREEN_HEAD_HEIGHT, LCD_WIDTH, LCD_HIGH, BLACK);
@@ -310,7 +316,7 @@ void play_song_content(void)
 
   set_head_string(file_name, WHITE, GOODBLUE);
   clear_screen_content();
-  display_string("正在播放音乐", 16, WHITE, BLACK);
+  display_string("正在播放音乐...", 16, WHITE, BLACK);
 
   IsPlay = true;
 }
@@ -334,7 +340,7 @@ void show_readme_content(void)
   case 2:
     set_head_string("音乐播放说明", WHITE, GOODBLUE);
     clear_screen_content();
-    display_string("【矩阵键盘】1键:暂停/播放，2键:增大音量，3键:减少音量", 16, WHITE, BLACK);
+  display_string("【矩阵键盘】1键:暂停/播放，2键:增大音量，3键:减少音量，4键:播放快进", 16, WHITE, BLACK);
     break;
   case 3:
     set_head_string("文本查看说明", WHITE, GOODBLUE);
