@@ -27,6 +27,7 @@ void display_string(char* pFont, uint8_t size,uint16_t fColor, uint16_t bColor);
 void display_string_center(char* pFont, uint8_t size,uint16_t fColor, uint16_t bColor);
 void display_string_custom(char* pFont, uint8_t size,uint16_t fColor, uint16_t bColor,uint16_t x,uint16_t y);
 void set_head_string(char* pFont,uint16_t fColor, uint16_t bColor);
+void clear_current_line(uint8_t size);
 void clear_screen_all(void);
 void clear_screen_head( uint16_t bColor);
 void clear_screen_content(void);
