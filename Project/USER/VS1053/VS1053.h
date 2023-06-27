@@ -62,7 +62,8 @@ typedef __PACKED_STRUCT
 
 typedef enum{
 	VS1053_PLAY,
-	VS1053_STOP
+	VS1053_STOP,
+	VS1053_MOVE
 }VS1053STATUS; // VS1053×´Ì¬
 
 
@@ -152,6 +153,7 @@ uint8_t atk_mo1053_spi_read_write_byte(uint8_t data);   /* SPI¶ÁÐ´Ò»¸ö×Ö½Ú */
 long song_play(char *path,long startpos);
 void addvolume(void);
 void subvolume(void);
+void musicmoveforward(void);
 
 
 

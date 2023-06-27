@@ -731,7 +731,11 @@ long song_play(char *path,long startpos)
       VS1053_CURRENTPOS=0;
       Vs1053Status=VS1053_PLAY;
   }			
-                       
+     if(strcmp(path,"")==0)
+		 {
+			 printf("error");
+			 return 0;
+		 }
   res = f_open(fmp3,path, FA_READ);              /* 打开文件 */
   f_lseek(fmp3,startpos);
   if(res==0)
@@ -740,7 +744,6 @@ long song_play(char *path,long startpos)
   }
   if (res == 0)                                                   /* 打开成功 */
   {
-    //atk_mo1053_spi_speed_high();
       atk_mo1053_spi_speed_high();                                /* 高速 */
     //spi1_set_speed(SPI_SPEED_8);
     while (rval == 0)
@@ -763,19 +766,22 @@ long song_play(char *path,long startpos)
         /* 循环发送4096个字节 */
         switch(Vs1053Status)
         {
-          case VS1053_STOP:
-            
+          case VS1053_STOP:    
             VS1053_CURRENTPOS=length;
 					  f_close(fmp3);
 					  myfree(SRAMIN,databuf);
             myfree(SRAMIN,fmp3);
-					
+            return 0;
+					case VS1053_MOVE:
+						VS1053_CURRENTPOS=length+=4096*10;
+					  f_close(fmp3);
+					  myfree(SRAMIN,databuf);
+            myfree(SRAMIN,fmp3);
             return 0;
           default: break;
         }     
         if (br != 4096 || res != 0)
         {
-            //rval = KEY0_PRES;
           VS1053_CURRENTPOS=0;
             break;                                              /* 读完了 */
         }
@@ -802,5 +808,10 @@ void subvolume()
 {
 	vsset.mvol-=10;
 	atk_mo1053_set_volume(vsset.mvol);	
+}
+
+void musicmoveforward(void)
+{
+	
 }
 
