@@ -20,6 +20,7 @@ extern bool IsEndTxt;
 
 extern char SongFullName[10 + NAMELIST_MAX_LEN]; // 用于音乐播放
 extern bool IsPlay;
+extern bool IsStop;
 
 uint8_t private_cursor_check(void)
 {
@@ -319,6 +320,7 @@ void play_song_content(void)
   display_string("正在播放音乐...", 16, WHITE, BLACK);
 
   IsPlay = true;
+	IsStop = false;
 }
 
 void show_readme_content(void)
