@@ -140,7 +140,7 @@ int main(void)
   //  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
   // 初始化屏幕标题
-  set_head_string("系统初始化中", WHITE, GOODBLUE);
+  set_head_string("系统初始化中", BLACK, GOODBLUE);
   // 启动定时器
   __HAL_TIM_CLEAR_IT(&htim7, TIM_IT_UPDATE);
   HAL_TIM_Base_Start_IT(&htim7);
@@ -271,9 +271,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 			{
 				Vs1053Status = VS1053_MOVE;
 				IsStop=1;
-				IsPlay=1;
-				
-						
+				IsPlay=1;				
 			}
       printf("res:%d", res);
     }

@@ -112,7 +112,7 @@ void draw_main_menu(void)
   MenuInfo = MAIN_MENU;
   SelectIndex = 0;
   SubMenuOk = true;
-  set_head_string("主菜单", WHITE, GOODBLUE);
+  set_head_string("主菜单", BLACK, GOODBLUE);
   clear_screen_content();
 
   display_string("请选择功能:", MENU_HEIGHT_SIZE, WHITE, BLACK);
@@ -130,7 +130,7 @@ void draw_txt_menu(void)
   MenuInfo = TXT_MENU;
   SelectIndex = 0;
   SubMenuOk = true;
-  set_head_string("文本文件菜单", WHITE, GOODBLUE);
+  set_head_string("文本文件菜单", BLACK, GOODBLUE);
   clear_screen_content();
 
   //  printf("aaaa");
@@ -163,7 +163,7 @@ void draw_pic_menu(void)
   MenuInfo = PIC_MENU;
   SelectIndex = 0;
   SubMenuOk = true;
-  set_head_string("图片文件菜单", WHITE, GOODBLUE);
+  set_head_string("图片文件菜单", BLACK, GOODBLUE);
   clear_screen_content();
 
   FRESULT res = f_scandir(PIC_FOLDER);
@@ -198,7 +198,7 @@ void draw_music_menu(void)
   MenuInfo = MUSIC_MENU;
   SelectIndex = 0;
   SubMenuOk = true;
-  set_head_string("音乐文件菜单", WHITE, GOODBLUE);
+  set_head_string("音乐文件菜单", BLACK, GOODBLUE);
   clear_screen_content();
 
   printf("1111");
@@ -229,7 +229,7 @@ void draw_readme_menu(void)
   MenuInfo = README_MENU;
   SelectIndex = 0;
   SubMenuOk = true;
-  set_head_string("说明文件菜单", WHITE, GOODBLUE);
+  set_head_string("说明文件菜单", BLACK, GOODBLUE);
   clear_screen_content();
 
   display_string("请选择功能:", MENU_HEIGHT_SIZE, WHITE, BLACK);
@@ -269,7 +269,7 @@ void show_txt_content(void)
   printf("%s\nd", Buffer);
 
   // 显示读取到的内容
-  set_head_string(file_name, WHITE, GOODBLUE);
+  set_head_string(file_name, BLACK, GOODBLUE);
   clear_screen_content();
   if (has_read <= MAX_DISPLAY_TXT_LENGTH)
   {
@@ -293,7 +293,7 @@ void show_pic_content(void)
   char full_name[10 + NAMELIST_MAX_LEN] = "0:/pic/";
   strcat(full_name, file_name);
 
-  set_head_string(file_name, WHITE, GOODBLUE);
+  set_head_string(file_name, BLACK, GOODBLUE);
   clear_screen_content();
   printf("pic 1111\n");
   uint8_t res = ai_load_picfile(full_name, 1, SCREEN_HEAD_HEIGHT + 1, PIC_SIZE, PIC_SIZE, 0);
@@ -315,7 +315,7 @@ void play_song_content(void)
   strcat(SongFullName, file_name);
   //  printf("filename:%s",full_name);
 
-  set_head_string(file_name, WHITE, GOODBLUE);
+  set_head_string(file_name, BLACK, GOODBLUE);
   clear_screen_content();
   display_string("正在播放音乐...", 16, WHITE, BLACK);
 
@@ -330,27 +330,27 @@ void show_readme_content(void)
   switch (SelectIndex)
   {
   case 0:
-    set_head_string("按键说明", WHITE, GOODBLUE);
+    set_head_string("按键说明", BLACK, GOODBLUE);
     clear_screen_content();
     display_string("Key1:下一个选项，Key2:确认，Key3:返回或取消", 16, WHITE, BLACK);
     break;
   case 1:
-    set_head_string("SD卡说明", WHITE, GOODBLUE);
+    set_head_string("SD卡说明", BLACK, GOODBLUE);
     clear_screen_content();
     display_string("txt:文本文件目录，pic:图片文件目录，music:音乐文件目录", 16, WHITE, BLACK);
     break;
   case 2:
-    set_head_string("音乐播放说明", WHITE, GOODBLUE);
+    set_head_string("音乐播放说明", BLACK, GOODBLUE);
     clear_screen_content();
   display_string("【矩阵键盘】1键:暂停/播放，2键:增大音量，3键:减少音量，4键:播放快进", 16, WHITE, BLACK);
     break;
   case 3:
-    set_head_string("文本查看说明", WHITE, GOODBLUE);
+    set_head_string("文本查看说明", BLACK, GOODBLUE);
     clear_screen_content();
     display_string("【矩阵键盘】1键:向前翻页，2键:向后翻页", 16, WHITE, BLACK);
     break;
   default:
-    set_head_string("非法选项", WHITE, GOODBLUE);
+    set_head_string("非法选项", BLACK, GOODBLUE);
     clear_screen_content();
     display_string("无说明", 16, WHITE, BLACK);
   }
