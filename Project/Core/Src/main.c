@@ -184,14 +184,20 @@ int main(void)
     if (IsPlay && !IsStop)
     {
       song_play(SongFullName, 0);
+			IsPlay = false;
+			if( Vs1053Status == VS1053_MOVE)
+				IsPlay = true;
       Vs1053Status = VS1053_PLAY;
-      IsPlay = false;
+      
     }
     if (IsPlay && IsStop)
     {
       song_play(SongFullName, VS1053_CURRENTPOS);
+			IsPlay = false;
+			if( Vs1053Status == VS1053_MOVE)
+				IsPlay = true;
       Vs1053Status = VS1053_PLAY;
-      IsPlay = false;
+      
     }
   }
   /* USER CODE END 3 */
@@ -261,6 +267,14 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
       {
         subvolume();
       }
+			if(res==4)
+			{
+				Vs1053Status = VS1053_MOVE;
+				IsStop=1;
+				IsPlay=1;
+				
+						
+			}
       printf("res:%d", res);
     }
     else if (res != 0 && MenuInfo == TXT_DETAIL_MENU)
