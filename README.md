@@ -48,6 +48,7 @@
 ![image-20230628193838844](https://hanshansite-1307452666.cos.ap-shanghai.myqcloud.com/site-img/image-20230628193838844.png)
 
 #### SD卡文件准备
+在SD卡根目录新建txt、pic和music文件夹，它们存储的文件类型如下表
 | 文件夹 | 存储的文件 |
 | ------------ | ------------------------- |
 | txt          | 文本文件                  |
